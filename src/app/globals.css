@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 226 100% 97%;
+  --foreground: 224 71.4% 4.1%;
+}
+
+.dark {
+  --background: 224 71.4% 4.1%;
+  --foreground: 226 100% 97%;
+}
+
+body {
+  background: #F1F5F9;
+  color: #1A1A1A;
+}
+
+html.dark body {
+  background: #1B2430;
+  color: #E2E8F0;
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #00A8E8, #38BDF8);
+  }
+}
+
+.custom-toast {
+  background: linear-gradient(to right, #0074A3, #00A8E8) !important;
+  color: #E6F7FE !important;
+  border: 1px solid rgba(0, 168, 232, 0.4) !important;
+  box-shadow: 0 4px 16px rgba(0, 168, 232, 0.3) !important;
+}
+
+.custom-toast-title {
+  font-size: 1.05rem !important;
+  font-weight: 800 !important;
+  color: #f8fafc !important;
+}
+
+.custom-toast-description {
+  font-size: 0.9rem !important;
+  color: #C5ECFD !important;
+}
+
+.custom-toast-action {
+  background: #ef4444 !important;
+  color: white !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.4rem 0.9rem !important;
+  transition: all 0.2s;
+}
+
+.custom-toast-action:hover {
+  background: #dc2626 !important;
+}
+
+[data-close-button] {
+  background: #fef2f2 !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+  border-radius: 50% !important;
+  transition: all 0.2s;
+}
+
+[data-close-button]:hover {
+  background: #fecaca !important;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}

@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum SocioEstado {
+  ACTIVO
+  SUSPENDIDO
+}
+
+enum PrestamoEstado {
+  PRESTADO
+  DEVUELTO
+}
+
+model Usuario {
+  id             String   @id @default(cuid())
+  username       String   @unique
+  password       String
+  nombre         String
+  nombreCompleto String?
+  rol            String   @default("ADMIN")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Socio {
+  id        String      @id @default(cuid())
+  nombre    String
+  apellido  String
+  dni       String      @unique
+  telefono  String?
+  email     String?     @unique
+  direccion String?     // Añadido para completar el perfil del socio
+  estado    SocioEstado @default(ACTIVO)
+  prestamos Prestamo[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model Libro {
+  id                 String     @id @default(cuid())
+
+  // --- Campos MARC 21 ---
+  isbn               String?    // MARC 020 - ISBN
+  idioma             String?    // MARC 041 - Código de idioma (ej: "es", "en")
+  clasificacion      String?    // MARC 080 - CDU (Clasificación Decimal Universal)
+  autor              String?    // MARC 100 - Autor principal (Apellido, Nombre)
+  autorInstitucional String?    // MARC 110 - Autor institucional (organismo, institución)
+  titulo             String?    // MARC 245 - Título y subtítulo
+  edicion            String?    // MARC 250 - Mención de edición (ej: "6a. ed.")
+  lugarPublicacion   String?    // MARC 260 - Lugar de publicación (ej: "Buenos Aires")
+  editorial          String?    // MARC 260 - Editorial (ej: "Panamericana")
+  anioPublicacion    String?    // MARC 260 - Año de publicación (ej: "2003")
+  descripcionFisica  String?    // MARC 300 - Descripción física (ej: "1168 p. il. ; 29 cm.")
+  notaGeneral        String?    // MARC 500 - Nota general
+  temas              String?    // MARC 650 - Temas/Materias (separados por coma)
+  descriptores       String?    // MARC 653 - Descriptores no controlados (separados por coma)
+  colaboradores      String?    // MARC 700 - Autores secundarios (separados por coma)
+  bibliotecario      String?    // MARC 900 - Bibliotecario responsable del registro
+  volumen            String?    // Número de volumen (ej: "1", "2")
+
+  // --- Campos extra (fuera de MARC) ---
+  inventario         String?    // [Deprecado] Usar ejemplares
+  tipoMaterial       String?    // [Deprecado] Usar ejemplares
+  ubicacion          String?    // [Deprecado] Usar ejemplares
+  portadaUrl         String?    // URL de la imagen de portada
+  cantidadEjemplares Int        @default(1) // [Deprecado] Calcular desde ejemplares
+  datosMarc          Json?      // Flexibilidad para otras etiquetas MARC futuras
+
+  ejemplares         Ejemplar[]
+  prestamos          Prestamo[]
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+}
+
+model Ejemplar {
+  id             String   @id @default(cuid())
+  codigoInterno  String
+  tipoMaterial   String?
+  ubicacion      String?
+  codigoEstante  String?   // Ej: "Literatura Infantil 1"
+  estado         String   @default("DISPONIBLE") // DISPONIBLE, PRESTADO, MANTENIMIENTO
+  libroId        String
+  libro          Libro    @relation(fields: [libroId], references: [id], onDelete: Cascade)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([libroId, codigoInterno])
+}
+
+model Prestamo {
+  id                    String         @id @default(cuid())
+  socioId               String
+  socio                 Socio          @relation(fields: [socioId], references: [id])
+  libroId               String
+  libro                 Libro          @relation(fields: [libroId], references: [id])
+  fechaSalida           DateTime       @default(now())
+  fechaDevolucionPrevista DateTime
+  fechaDevolucionReal   DateTime?
+  estado                PrestamoEstado @default(PRESTADO)
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+}

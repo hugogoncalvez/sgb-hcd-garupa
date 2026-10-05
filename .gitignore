@@ -1,0 +1,54 @@
+# Dependencias
+node_modules/
+.pnp
+.pnp.js
+
+# Build de Next.js
+.next/
+out/
+
+# Build general
+build/
+
+# Archivos de entorno (contienen credenciales)
+.env
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma - bases SQLite locales (si se usan)
+prisma/*.db
+prisma/*.db-journal
+
+# Sistema
+.DS_Store
+*.pem
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage/
+
+# Archivos con credenciales en texto plano
+supabaseBD
+
+# Documentación / diseño / notas que no forman parte del proyecto
+stitch_bibliogarupa_admin_interface/
+Campos mínimos Biblioteca Garupá.docx
+Captura de pantalla*
+DeployVercel
+DeployVercel.png
+Resumen 04-06-26.md
+RESUMEN_PROYECTO.md
+
+# IDE
+.vscode/
+.idea/
