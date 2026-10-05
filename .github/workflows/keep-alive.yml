@@ -1,0 +1,12 @@
+name: keep-alive
+on:
+  schedule:
+    - cron: '0 8 */2 * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping keep-alive endpoint
+        run: |
+          curl -fsS "https://sgb-hcd-garupa.vercel.app/api/keep-alive?key=${{ secrets.KEEP_ALIVE_KEY }}"
