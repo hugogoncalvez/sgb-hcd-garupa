@@ -85,4 +85,4 @@ Supabase pausa el proyecto tras ~7 días sin uso. Para evitarlo existe `GET /api
 - Repo: https://github.com/hugogoncalvez/sgb-hcd-garupa.git — prod: https://sgb-hcd-garupa.vercel.app
 - Env vars en Vercel **sin comillas**: `DATABASE_URL` = Session pooler Supabase (puerto 5432, usuario `postgres.<ref>`), `DIRECT_URL` = directa (5432), `NEXTAUTH_URL` = URL prod, `NEXTAUTH_SECRET`, `GOOGLE_BOOKS_API_KEY`, `KEEP_ALIVE_KEY`.
 - Verificación: `/api/debug` (DB + usuarios). Pendiente: proteger o eliminar `/api/debug` (público).
-- Cron keep-alive en cron-job.org → `https://sgb-hcd-garupa.vercel.app/api/keep-alive?key=<KEEP_ALIVE_KEY>` cada 2 días.
+- Cron keep-alive: GitHub Action `.github/workflows/keep-alive.yml` (`0 8 */2 * *`) → /api/keep-alive con secret `KEEP_ALIVE_KEY`. Manual: Actions → keep-alive → Run workflow.
