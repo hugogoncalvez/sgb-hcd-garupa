@@ -52,3 +52,7 @@ RESUMEN_PROYECTO.md
 # IDE
 .vscode/
 .idea/
+
+# Credenciales Supabase en texto plano
+supabase
+supabaseBD
