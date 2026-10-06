@@ -22,11 +22,17 @@ const navItems = [
   { name: 'Reportes', href: '/reportes', icon: BarChart3 },
 ];
 
-export function Sidebar() {
+export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
 
   return (
-    <aside className="h-screen w-64 fixed left-0 top-0 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 flex flex-col p-4 gap-2 z-50">
+    <>
+      {/* Overlay solo en móvil */}
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 bg-slate-900/50 z-40 lg:hidden transition-opacity ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      />
+      <aside className={`h-screen w-64 fixed left-0 top-0 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 flex flex-col p-4 gap-2 z-50 transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
       <div className="flex items-center gap-3 px-2 py-6 mb-6">
         <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-700 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 overflow-hidden p-0.5 border border-slate-100 dark:border-slate-700">
           <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
@@ -44,6 +50,7 @@ export function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
+              onClick={onClose}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all active:scale-95 font-semibold text-sm ${
                 isActive 
                   ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 shadow-sm border border-indigo-100/50 dark:border-indigo-500/20' 
@@ -67,5 +74,6 @@ export function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

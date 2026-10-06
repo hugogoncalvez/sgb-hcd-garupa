@@ -64,7 +64,7 @@ export default function NuevoSocio() {
 
         {/* Registration Card */}
         <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden border border-slate-100 dark:border-slate-700">
-          <div className="p-10 md:p-16">
+          <div className="p-5 md:p-10 md:p-16">
             <div className="flex flex-col md:flex-row gap-16">
               {/* Left: Profile Picture Placeholder */}
               <div className="flex flex-col items-center gap-6 w-full md:w-1/3 border-r border-slate-100 dark:border-slate-700 pr-16">

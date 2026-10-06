@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Sidebar } from './Sidebar';
@@ -9,6 +9,7 @@ import { TopBar } from './TopBar';
 export function MainLayout({ children, title }: { children: React.ReactNode, title?: string }) {
   const { status } = useSession();
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -20,10 +21,10 @@ export function MainLayout({ children, title }: { children: React.ReactNode, tit
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
-      <Sidebar />
-      <div className="ml-64 flex flex-col min-h-screen">
-        <TopBar title={title} />
-        <main className="flex-1 p-8 max-w-7xl mx-auto w-full">
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="lg:ml-64 flex flex-col min-h-screen">
+        <TopBar title={title} onMenu={() => setSidebarOpen(true)} />
+        <main className="flex-1 p-4 md:p-8 max-w-7xl mx-auto w-full">
           {children}
         </main>
       </div>

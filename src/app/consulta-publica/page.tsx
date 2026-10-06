@@ -211,7 +211,7 @@ export default function ConsultaPublica() {
               </button>
             </div>
 
-            <div className="p-8 overflow-y-auto max-h-[75vh]">
+            <div className="p-4 md:p-8 overflow-y-auto max-h-[75vh]">
               <div className="flex flex-col md:flex-row gap-8">
                 <div className="flex-shrink-0">
                   <div className="w-44 h-64 bg-slate-100 dark:bg-slate-700 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-600 shadow-lg flex items-center justify-center">

@@ -87,11 +87,11 @@ export default function PrestamosPage() {
 
   return (
     <MainLayout title="Gestión de Préstamos">
-      <div className="grid grid-cols-12 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
         {/* Left Column: Selection */}
         <div className="col-span-12 lg:col-span-7 space-y-8">
           {/* Socio Selection */}
-          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
+          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
             <div className="flex items-center gap-3 mb-6">
               <UserSearch className="text-indigo-600" size={28} />
               <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Identificación del Socio</h3>
@@ -161,7 +161,7 @@ export default function PrestamosPage() {
           </section>
 
           {/* Libro Selection */}
-          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
+          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
             <div className="flex items-center gap-3 mb-6">
               <BookMarked className="text-indigo-600" size={28} />
               <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Ejemplar de la Colección</h3>
@@ -243,7 +243,7 @@ export default function PrestamosPage() {
         {/* Right Column: Transaction Summary */}
         <div className="col-span-12 lg:col-span-5">
           <div className="sticky top-28 bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-100 dark:shadow-indigo-900/20 border border-slate-100 dark:border-slate-700">
-            <div className="bg-indigo-600 p-8 text-white relative overflow-hidden">
+            <div className="bg-indigo-600 p-4 md:p-8 text-white relative overflow-hidden">
               <div className="relative z-10">
                 <h3 className="text-2xl font-black font-display">Resumen de Operación</h3>
                 <p className="text-xs font-bold opacity-60 mt-1 uppercase tracking-widest">Circulación de Patrimonio</p>
@@ -251,7 +251,7 @@ export default function PrestamosPage() {
               <Sparkles className="absolute -right-4 -bottom-4 text-indigo-500/30" size={140} />
             </div>
 
-            <div className="p-8 space-y-8">
+            <div className="p-4 md:p-8 space-y-8">
               {/* Visual Book Info */}
               <div className="flex gap-6">
                 <div className="w-24 h-36 bg-slate-100 dark:bg-slate-700 rounded-2xl flex-shrink-0 shadow-lg border-4 border-white dark:border-slate-800 flex items-center justify-center overflow-hidden">

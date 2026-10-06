@@ -322,7 +322,7 @@ export default function CatalogoList() {
             </div>
 
             {/* Content */}
-            <div className="p-8 overflow-y-auto max-h-[75vh]">
+            <div className="p-4 md:p-8 overflow-y-auto max-h-[75vh]">
               <div className="flex flex-col md:flex-row gap-8">
                 {/* Cover */}
                 <div className="flex-shrink-0">

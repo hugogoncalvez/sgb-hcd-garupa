@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Sparkles, Moon, Sun, AlertTriangle } from 'lucide-react';
+import { Bell, Sparkles, Moon, Sun, AlertTriangle, Menu } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/utils/trpc';
 
-export function TopBar({ title }: { title?: string }) {
+export function TopBar({ title, onMenu }: { title?: string; onMenu?: () => void }) {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -28,8 +28,15 @@ export function TopBar({ title }: { title?: string }) {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 h-20 flex items-center justify-between px-8">
-      <div className="flex items-center gap-8">
+    <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 h-20 flex items-center justify-between px-4 md:px-8">
+      <div className="flex items-center gap-3 md:gap-8">
+        <button
+          onClick={onMenu}
+          className="lg:hidden p-2.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+          title="Abrir menú"
+        >
+          <Menu size={22} />
+        </button>
         {title && (
           <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
             {title}
@@ -62,7 +69,7 @@ export function TopBar({ title }: { title?: string }) {
             </button>
 
             {notifOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-2xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+              <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-2xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
                 <div className="p-4 border-b border-slate-100 dark:border-slate-700">
                   <p className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <AlertTriangle size={16} className="text-rose-500" />
