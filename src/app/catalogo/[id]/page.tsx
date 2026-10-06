@@ -30,6 +30,8 @@ import {
   Layers,
   Plus,
   Library,
+  Image as ImageIcon,
+  Search,
 } from 'lucide-react';
 export default function LibroDetail() {
   const { id } = useParams<{ id: string }>();
@@ -57,6 +59,7 @@ export default function LibroDetail() {
     descriptores: '',
     colaboradores: '',
     volumen: '',
+    portadaUrl: '',
   });
 
   const updateLibro = trpc.libros.update.useMutation({
@@ -103,9 +106,24 @@ export default function LibroDetail() {
       descriptores: libro.descriptores || '',
       colaboradores: libro.colaboradores || '',
       volumen: libro.volumen || '',
+      portadaUrl: libro.portadaUrl || '',
     });
     setIsEditing(true);
   };
+
+  const buscarPortada = trpc.libros.getByIsbnExternal.useMutation({
+    onSuccess: (data) => {
+      if (data?.portadaUrl) {
+        setForm(f => ({ ...f, portadaUrl: data.portadaUrl as string }));
+        toast.success('Portada encontrada', { duration: 3000 });
+      } else {
+        toast.error('No se encontró portada para ese ISBN', { duration: 4000 });
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message, { duration: 4000 });
+    },
+  });
 
   const handleSave = () => {
     updateLibro.mutate({ id, ...form });
@@ -181,8 +199,12 @@ export default function LibroDetail() {
         <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 p-5 md:p-10 text-white relative overflow-hidden">
             <div className="relative z-10 flex items-center gap-8">
-              <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-black backdrop-blur-sm">
-                <BookOpen size={36} />
+              <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-black backdrop-blur-sm overflow-hidden flex-shrink-0">
+                {libro.portadaUrl ? (
+                  <img src={libro.portadaUrl} alt="Portada" className="w-full h-full object-cover" />
+                ) : (
+                  <BookOpen size={36} />
+                )}
               </div>
               <div>
                 <h2 className="text-3xl font-black font-display">{libro.titulo || 'Sin título'}</h2>
@@ -201,6 +223,27 @@ export default function LibroDetail() {
                 {isEditing ? (
                   <>
                     <EditField icon={<Barcode size={18} />} label="ISBN" value={form.isbn} onChange={(v) => setForm(f => ({ ...f, isbn: v }))} />
+                    <div className="flex items-start gap-3">
+                      <div className="w-16 h-24 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center">
+                        {form.portadaUrl ? (
+                          <img src={form.portadaUrl} alt="Portada" className="w-full h-full object-cover" />
+                        ) : (
+                          <ImageIcon size={24} className="text-slate-300 dark:text-slate-600" />
+                        )}
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <EditField icon={<ImageIcon size={18} />} label="URL de Portada" value={form.portadaUrl} onChange={(v) => setForm(f => ({ ...f, portadaUrl: v }))} />
+                        <button
+                          type="button"
+                          onClick={() => form.isbn.trim() ? buscarPortada.mutate({ isbn: form.isbn.trim() }) : toast.error('Primero cargá el ISBN')}
+                          disabled={buscarPortada.isPending}
+                          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:bg-indigo-700 transition-all disabled:opacity-50"
+                        >
+                          <Search size={14} />
+                          {buscarPortada.isPending ? 'Buscando...' : 'Buscar portada por ISBN'}
+                        </button>
+                      </div>
+                    </div>
                     <EditField icon={<Globe size={18} />} label="Idioma" value={form.idioma} onChange={(v) => setForm(f => ({ ...f, idioma: v }))} />
                     <EditField icon={<Hash size={18} />} label="CDU (Clasificación)" value={form.clasificacion} onChange={(v) => setForm(f => ({ ...f, clasificacion: v }))} />
                     <EditField icon={<BookMarked size={18} />} label="Título" value={form.titulo} onChange={(v) => setForm(f => ({ ...f, titulo: v }))} />
