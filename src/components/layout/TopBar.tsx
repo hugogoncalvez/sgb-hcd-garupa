@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/utils/trpc';
 
-export function TopBar({ title, onMenu }: { title?: string; onMenu?: () => void }) {
+export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTitle?: string; onMenu?: () => void }) {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const router = useRouter();
@@ -29,18 +29,23 @@ export function TopBar({ title, onMenu }: { title?: string; onMenu?: () => void 
 
   return (
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 h-20 flex items-center justify-between px-4 md:px-8">
-      <div className="flex items-center gap-3 md:gap-8">
+      <div className="flex items-center gap-3 md:gap-8 min-w-0">
         <button
           onClick={onMenu}
-          className="lg:hidden p-2.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+          className="lg:hidden p-2.5 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all flex-shrink-0"
           title="Abrir menú"
         >
           <Menu size={22} />
         </button>
         {title && (
-          <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-            {title}
-          </h2>
+          <>
+            <h2 className="hidden lg:block text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">
+              {title}
+            </h2>
+            <h2 className="lg:hidden text-lg font-black text-slate-900 dark:text-white tracking-tight truncate">
+              {shortTitle || title}
+            </h2>
+          </>
         )}
       </div>
 

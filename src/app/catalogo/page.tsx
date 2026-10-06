@@ -95,7 +95,7 @@ export default function CatalogoList() {
   });
 
   return (
-    <MainLayout title="Inventario Bibliográfico">
+    <MainLayout title="Inventario Bibliográfico" shortTitle="Inventario">
       <div className="space-y-8">
         {/* Stats Bento Style */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

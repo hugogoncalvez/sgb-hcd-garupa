@@ -261,7 +261,7 @@ export default function NuevoLibro() {
   };
 
   return (
-    <MainLayout title="Catalogación MARC 21">
+    <MainLayout title="Catalogación MARC 21" shortTitle="Nuevo libro">
       <div className="max-w-5xl mx-auto py-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 mb-8 text-slate-400 dark:text-slate-500 font-semibold text-sm">

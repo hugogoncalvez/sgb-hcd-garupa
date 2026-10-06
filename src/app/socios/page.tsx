@@ -33,7 +33,7 @@ export default function SociosList() {
   });
 
   return (
-    <MainLayout title="Directorio de Miembros">
+    <MainLayout title="Directorio de Miembros" shortTitle="Socios">
       <div className="space-y-8">
         {/* Actions Bar */}
         <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">

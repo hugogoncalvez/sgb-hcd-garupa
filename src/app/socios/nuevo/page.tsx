@@ -53,7 +53,7 @@ export default function NuevoSocio() {
   };
 
   return (
-    <MainLayout title="Registro de Socio">
+    <MainLayout title="Registro de Socio" shortTitle="Nuevo socio">
       <div className="max-w-5xl mx-auto py-8">
         {/* Breadcrumbs */}
         <nav className="flex items-center gap-2 mb-8 text-slate-400 dark:text-slate-500 font-semibold text-sm">

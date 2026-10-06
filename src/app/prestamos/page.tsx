@@ -86,7 +86,7 @@ export default function PrestamosPage() {
   };
 
   return (
-    <MainLayout title="Gestión de Préstamos">
+    <MainLayout title="Gestión de Préstamos" shortTitle="Préstamos">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10">
         {/* Left Column: Selection */}
         <div className="col-span-12 lg:col-span-7 space-y-8">

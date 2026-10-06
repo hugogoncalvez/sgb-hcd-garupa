@@ -74,7 +74,7 @@ export default function SocioDetail() {
 
   if (isLoading) {
     return (
-      <MainLayout title="Detalle del Socio">
+      <MainLayout title="Detalle del Socio" shortTitle="Socio">
         <div className="animate-pulse space-y-8">
           <div className="h-8 w-48 bg-slate-200 dark:bg-slate-700 rounded-xl" />
           <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-[2rem]" />
@@ -85,7 +85,7 @@ export default function SocioDetail() {
 
   if (!socio) {
     return (
-      <MainLayout title="Detalle del Socio">
+      <MainLayout title="Detalle del Socio" shortTitle="Socio">
         <div className="text-center py-20">
           <p className="text-slate-400 font-semibold">Socio no encontrado</p>
         </div>
@@ -97,7 +97,7 @@ export default function SocioDetail() {
   const prestamosDevueltos = socio.prestamos.filter(p => p.estado === 'DEVUELTO');
 
   return (
-    <MainLayout title="Detalle del Socio">
+    <MainLayout title="Detalle del Socio" shortTitle="Socio">
       <div className="max-w-5xl mx-auto space-y-10">
         {/* Back + Edit buttons */}
         <div className="flex items-center justify-between">

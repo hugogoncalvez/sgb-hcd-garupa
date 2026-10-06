@@ -166,7 +166,7 @@ export default function LibroDetail() {
 
   if (isLoading) {
     return (
-      <MainLayout title="Detalle del Libro">
+      <MainLayout title="Detalle del Libro" shortTitle="Libro">
         <div className="space-y-8">
           <div className="h-8 w-48 skeleton rounded-xl" />
           <div className="h-64 skeleton rounded-[2rem]" />
@@ -183,7 +183,7 @@ export default function LibroDetail() {
 
   if (!libro) {
     return (
-      <MainLayout title="Detalle del Libro">
+      <MainLayout title="Detalle del Libro" shortTitle="Libro">
         <div className="text-center py-20">
           <p className="text-slate-400 font-semibold">Libro no encontrado</p>
         </div>
@@ -192,7 +192,7 @@ export default function LibroDetail() {
   }
 
   return (
-    <MainLayout title="Detalle del Libro">
+    <MainLayout title="Detalle del Libro" shortTitle="Libro">
       <div className="max-w-5xl mx-auto space-y-10">
         <div className="flex items-center justify-between">
           <button
