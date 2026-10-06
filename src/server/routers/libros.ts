@@ -289,6 +289,23 @@ export const librosRouter = router({
       });
     }),
 
+  updateEjemplar: publicProcedure
+    .input(z.object({
+      id: z.string(),
+      codigoInterno: z.string().min(1).optional(),
+      tipoMaterial: z.string().optional(),
+      ubicacion: z.string().optional(),
+      codigoEstante: z.string().optional(),
+      estado: z.enum(['DISPONIBLE', 'PRESTADO', 'MANTENIMIENTO']).optional(),
+    }))
+    .mutation(async ({ ctx, input }) => {
+      const { id, ...data } = input;
+      return await ctx.prisma.ejemplar.update({
+        where: { id },
+        data,
+      });
+    }),
+
   addEjemplares: publicProcedure
     .input(z.object({
       libroId: z.string(),
