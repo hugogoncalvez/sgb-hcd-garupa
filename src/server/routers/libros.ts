@@ -598,6 +598,44 @@ export const librosRouter = router({
         }
       }
 
+      // 5. Fallback de portada: CDN tap-commerce (cubre libros españoles/argentinos
+      // que no están en Google Books ni Open Library). Responde header itemfound.
+      if (found && !portadaUrl) {
+        try {
+          console.log(`Buscando portada directamente por ISBN ${cleanIsbn} en tap-commerce...`);
+          const tapUrl = `https://contentv2.tap-commerce.com/cover/large/${cleanIsbn}_1.jpg?id_com=717`;
+          const tapRes = await fetch(tapUrl, { method: 'HEAD' });
+          const itemFound = tapRes.headers.get('itemfound');
+          if (tapRes.ok && itemFound !== 'False') {
+            portadaUrl = tapUrl;
+            console.log(`Portada encontrada en tap-commerce: ${portadaUrl}`);
+          } else {
+            console.log('No se encontró portada en tap-commerce.');
+          }
+        } catch (error: any) {
+          console.error('Error al verificar portada en tap-commerce:', error?.message || error);
+        }
+      }
+
+      // 6. Último recurso: si ninguna API tiene los datos pero tap-commerce tiene
+      // la portada, devolver al menos eso (útil para el botón "Buscar portada").
+      if (!found) {
+        try {
+          const tapUrl = `https://contentv2.tap-commerce.com/cover/large/${cleanIsbn}_1.jpg?id_com=717`;
+          const tapRes = await fetch(tapUrl, { method: 'HEAD' });
+          if (tapRes.ok && tapRes.headers.get('itemfound') !== 'False') {
+            console.log(`Solo portada encontrada en tap-commerce para ISBN ${cleanIsbn}`);
+            return {
+              titulo: '', autor: '', colaboradores: '', anioPublicacion: '',
+              editorial: '', lugarPublicacion: '', edicion: '', portadaUrl: tapUrl,
+              descripcionFisica: '', idioma: '', temas: '',
+            };
+          }
+        } catch (error: any) {
+          console.error('Error en fallback final de tap-commerce:', error?.message || error);
+        }
+      }
+
       if (found) {
         return {
           titulo,
