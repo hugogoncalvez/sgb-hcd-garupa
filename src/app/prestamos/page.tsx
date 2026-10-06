@@ -127,11 +127,11 @@ export default function PrestamosPage() {
                           onClick={() => { setSelectedSocio(socio); setSocioSearch(''); }}
                           className="w-full p-4 flex items-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-700 text-left transition-colors border-b border-slate-50 dark:border-slate-700 last:border-0"
                         >
-                          <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 flex items-center justify-center font-black text-xs">
+                          <div className="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 flex items-center justify-center font-black text-xs flex-shrink-0">
                             {socio.nombre[0]}{socio.apellido[0]}
                           </div>
-                          <div>
-                            <p className="font-bold text-slate-900 dark:text-white">{socio.nombre} {socio.apellido}</p>
+                          <div className="min-w-0">
+                            <p className="font-bold text-slate-900 dark:text-white truncate">{socio.nombre} {socio.apellido}</p>
                             <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-widest">DNI: {socio.dni}</p>
                           </div>
                         </button>
@@ -184,7 +184,7 @@ export default function PrestamosPage() {
                 )}
 
                 {libroSearch.length > 2 && !selectedLibro && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto overflow-x-hidden">
                     {buscandoLibro ? (
                       <div className="p-4 flex items-center gap-3 text-slate-400">
                         <Loader2 size={18} className="animate-spin" />
@@ -201,8 +201,8 @@ export default function PrestamosPage() {
                             <BookOpen size={16} className="text-slate-300 dark:text-slate-500" />
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900 dark:text-white line-clamp-1">{libro.titulo}</p>
-                            <p className="text-xs font-semibold text-slate-400 dark:text-slate-500">{libro.autor} • ISBN {libro.isbn}</p>
+                            <p className="font-bold text-slate-900 dark:text-white line-clamp-1 break-words">{libro.titulo}</p>
+                            <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 truncate">{libro.autor} • ISBN {libro.isbn}</p>
                           </div>
                         </button>
                       ))
