@@ -89,3 +89,7 @@ Supabase pausa el proyecto tras ~7 días sin uso. Para evitarlo existe `GET /api
 
 ## Incidentes
 - 2026-10-05: 500 intermitentes en tRPC circulacion en Vercel por agotamiento de conexiones (EMAXCONNSESSION, pool session 15). Fix: `DATABASE_URL` al Transaction pooler (6543) con `?pgbouncer=true`.
+
+## Terminología UI (para no confundir)
+- **Modal de detalle**: vista rápida de solo lectura al hacer clic en una fila del catálogo.
+- **Edición del libro** (`/catalogo/[id]`, se llega con el lápiz ✏️ o el ojito 👁): página completa con Editar, Eliminar y gestión de ejemplares.
