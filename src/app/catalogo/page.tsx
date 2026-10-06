@@ -7,7 +7,8 @@ import {
   BookOpen, 
   Search, 
   Plus, 
-  Edit2, 
+  Edit2,
+  Edit3, 
   Trash2, 
   ChevronLeft,
   ChevronRight,
@@ -320,9 +321,18 @@ export default function CatalogoList() {
                 <BookOpen size={22} className="text-indigo-600" />
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">Detalle del Libro</h3>
               </div>
-              <button onClick={() => setDetalleLibro(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                <X size={20} />
-              </button>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/catalogo/${detalleLibro.id}`}
+                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:bg-indigo-700 transition-all"
+                >
+                  <Edit3 size={14} />
+                  Editar / Eliminar
+                </Link>
+                <button onClick={() => setDetalleLibro(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Content */}
