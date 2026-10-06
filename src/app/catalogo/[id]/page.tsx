@@ -27,7 +27,6 @@ import {
   Tag,
   Users,
   StickyNote,
-  Layers,
   Plus,
   Library,
   Image as ImageIcon,
@@ -262,20 +261,6 @@ export default function LibroDetail() {
                     <InfoRow icon={<Building2 size={18} />} label="Autor Institucional" value={libro.autorInstitucional || '—'} />
                     <InfoRow icon={<BookCopy size={18} />} label="Edición" value={libro.edicion || '—'} />
                     {libro.volumen && <InfoRow icon={<BookMarked size={18} />} label="Volumen" value={libro.volumen} />}
-                      <InfoRow icon={<Layers size={18} />} label="Ejemplares" value={String(libro.cantidadEjemplares)} />
-                      <div className="flex items-center gap-3 pt-2">
-                        <span className="text-sm font-bold text-slate-400">{libro.ejemplares?.length ?? 0} ejemplar{(libro.ejemplares?.length ?? 0) !== 1 ? 'es' : ''}</span>
-                        <button
-                          onClick={() => {
-                            setNuevoEj({ codigoInterno: '', tipoMaterial: '', ubicacion: '', codigoEstante: '' });
-                            setShowAddEjemplar(true);
-                          }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-all"
-                        >
-                          <Plus size={14} />
-                          Agregar
-                        </button>
-                      </div>
                   </>
                 )}
               </div>
@@ -311,13 +296,25 @@ export default function LibroDetail() {
             </div>
 
             {/* Ejemplares */}
-            {!isEditing && libro.ejemplares && libro.ejemplares.length > 0 && (
-              <div className="px-10 pb-10">
-                <div className="border-t border-slate-100 dark:border-slate-700 pt-6">
-                  <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-2">
-                    <Library size={14} /> Ejemplares ({libro.ejemplares.length})
+            <div className="px-4 md:px-10 pb-4 md:pb-10">
+              <div className="border-t border-slate-100 dark:border-slate-700 pt-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xs font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                    <Library size={14} /> Ejemplares ({libro.ejemplares?.length ?? 0})
                   </h3>
-                  <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => {
+                      setNuevoEj({ codigoInterno: '', tipoMaterial: '', ubicacion: '', codigoEstante: '' });
+                      setShowAddEjemplar(true);
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-bold hover:bg-emerald-700 transition-all"
+                  >
+                    <Plus size={14} />
+                    Agregar
+                  </button>
+                </div>
+                {(libro.ejemplares?.length ?? 0) > 0 ? (
+                  <div className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="bg-slate-50 dark:bg-slate-800/50">
@@ -329,7 +326,7 @@ export default function LibroDetail() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-                        {libro.ejemplares.map(ej => (
+                        {(libro.ejemplares ?? []).map(ej => (
                           <tr key={ej.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                             <td className="px-4 py-2.5 font-semibold text-slate-700 dark:text-slate-300">{ej.codigoInterno}</td>
                             <td className="px-4 py-2.5 text-slate-500 dark:text-slate-400">{ej.tipoMaterial || '—'}</td>
@@ -348,19 +345,14 @@ export default function LibroDetail() {
                         ))}
                       </tbody>
                     </table>
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">Detalles (estante)</p>
-                  <input
-                    value={nuevoEj.codigoEstante}
-                    onChange={e => setNuevoEj(prev => ({ ...prev, codigoEstante: e.target.value }))}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-sm outline-none focus:ring-2 focus:ring-indigo-100"
-                    placeholder="Ej: Literatura Infantil 1"
-                  />
-                </div>
+                  </div>
+                ) : (
+                  <p className="text-sm font-semibold text-slate-400 dark:text-slate-500 text-center py-6 border border-dashed border-slate-200 dark:border-slate-700 rounded-xl">
+                    Sin ejemplares — usá Agregar para cargar el primero
+                  </p>
+                )}
               </div>
-              </div>
-            )}
+            </div>
           </div>
         </div>
 
