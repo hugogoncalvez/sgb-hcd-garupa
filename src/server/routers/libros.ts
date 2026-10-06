@@ -289,6 +289,17 @@ export const librosRouter = router({
       });
     }),
 
+  deleteInfo: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const [ejemplares, prestamos, prestamosActivos] = await Promise.all([
+        ctx.prisma.ejemplar.count({ where: { libroId: input.id } }),
+        ctx.prisma.prestamo.count({ where: { libroId: input.id } }),
+        ctx.prisma.prestamo.count({ where: { libroId: input.id, estado: 'PRESTADO' } }),
+      ]);
+      return { ejemplares, prestamos, prestamosActivos };
+    }),
+
   updateEjemplar: publicProcedure
     .input(z.object({
       id: z.string(),

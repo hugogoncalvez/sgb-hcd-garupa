@@ -56,6 +56,10 @@ export default function CatalogoList() {
     { id: deleteTarget?.id ?? '' },
     { enabled: !!deleteTarget },
   );
+  const { data: deleteInfo } = trpc.libros.deleteInfo.useQuery(
+    { id: deleteTarget?.id ?? '' },
+    { enabled: !!deleteTarget },
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -554,23 +558,31 @@ export default function CatalogoList() {
               )}
             </div>
             <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50">
-              <button
-                type="button"
-                onClick={() => {
-                  toast(`¿Eliminar todo el libro "${deleteTarget.titulo}"?`, {
-                    description: 'Se eliminarán todos los ejemplares y el libro.',
-                    action: {
-                      label: 'Eliminar todo',
-                      onClick: () => eliminarLibro.mutate({ id: deleteTarget.id }),
-                    },
-                    duration: 6000,
-                  });
-                  setDeleteTarget(null);
-                }}
-                className="px-4 py-2 text-sm font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all"
-              >
-                Eliminar libro completo
-              </button>
+              <div className="flex flex-col gap-1">
+                {(deleteInfo?.prestamos ?? 0) > 0 ? (
+                  <p className="text-xs font-bold text-amber-600 dark:text-amber-400 max-w-[220px]">
+                    Tiene {deleteInfo?.prestamos} préstamo{(deleteInfo?.prestamos ?? 0) !== 1 ? 's' : ''} registrado{(deleteInfo?.prestamos ?? 0) !== 1 ? 's' : ''}: no se puede eliminar el libro completo.
+                  </p>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toast(`¿Eliminar todo el libro "${deleteTarget.titulo}"?`, {
+                        description: 'Se eliminarán todos los ejemplares y el libro.',
+                        action: {
+                          label: 'Eliminar todo',
+                          onClick: () => eliminarLibro.mutate({ id: deleteTarget.id }),
+                        },
+                        duration: 6000,
+                      });
+                      setDeleteTarget(null);
+                    }}
+                    className="px-4 py-2 text-sm font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-all text-left"
+                  >
+                    Eliminar libro completo
+                  </button>
+                )}
+              </div>
               <button
                 type="button"
                 disabled={selectedEjemplares.size === 0 || eliminarEjemplares.isPending}

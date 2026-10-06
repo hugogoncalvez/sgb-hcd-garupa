@@ -29,6 +29,7 @@ import {
   StickyNote,
   Plus,
   Library,
+  Trash2,
   Image as ImageIcon,
   Search,
 } from 'lucide-react';
@@ -41,6 +42,7 @@ export default function LibroDetail() {
   const [nuevoEj, setNuevoEj] = useState({ codigoInterno: '', tipoMaterial: '', ubicacion: '', codigoEstante: '' });
   const [editEj, setEditEj] = useState<{ id: string; codigoInterno: string; tipoMaterial: string; ubicacion: string; codigoEstante: string; estado: string } | null>(null);
   const { data: libro, isLoading } = trpc.libros.getById.useQuery({ id });
+  const { data: deleteInfo } = trpc.libros.deleteInfo.useQuery({ id });
 
   const [form, setForm] = useState({
     isbn: '',
@@ -93,6 +95,27 @@ export default function LibroDetail() {
       utils.libros.getById.invalidate({ id });
       utils.libros.getAll.invalidate();
       setEditEj(null);
+    },
+    onError: (error) => {
+      toast.error(error.message, { duration: 4000 });
+    },
+  });
+
+  const eliminarLibro = trpc.libros.delete.useMutation({
+    onSuccess: () => {
+      toast.success('Libro eliminado del inventario', { duration: 3000 });
+      router.push('/catalogo');
+    },
+    onError: (error) => {
+      toast.error(error.message, { duration: 4000 });
+    },
+  });
+
+  const eliminarEjemplar = trpc.libros.deleteEjemplares.useMutation({
+    onSuccess: () => {
+      toast.success('Ejemplar eliminado', { duration: 3000 });
+      utils.libros.getById.invalidate({ id });
+      utils.libros.getAll.invalidate();
     },
     onError: (error) => {
       toast.error(error.message, { duration: 4000 });
@@ -180,13 +203,41 @@ export default function LibroDetail() {
             Volver al inventario
           </button>
           {!isEditing ? (
-            <button
-              onClick={startEditing}
-              className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 dark:shadow-indigo-900/30"
-            >
-              <Edit3 size={16} />
-              Editar Libro
-            </button>
+            <div className="flex items-center gap-3">
+              {(deleteInfo?.prestamos ?? 0) > 0 ? (
+                <span
+                  className="px-5 py-2.5 text-slate-400 font-bold text-sm cursor-not-allowed"
+                  title={`Tiene ${deleteInfo?.prestamos} préstamo(s) registrado(s): no se puede eliminar`}
+                >
+                  No eliminable
+                </span>
+              ) : (
+                <button
+                  onClick={() => {
+                    toast(`¿Eliminar "${libro.titulo || 'este libro'}"?`, {
+                      description: 'Se eliminarán todos los ejemplares y el libro.',
+                      action: {
+                        label: 'Eliminar',
+                        onClick: () => eliminarLibro.mutate({ id }),
+                      },
+                      duration: 6000,
+                    });
+                  }}
+                  disabled={eliminarLibro.isPending}
+                  className="flex items-center gap-2 px-5 py-2.5 text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl font-bold text-sm transition-all disabled:opacity-50"
+                >
+                  <Trash2 size={16} />
+                  Eliminar
+                </button>
+              )}
+              <button
+                onClick={startEditing}
+                className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all shadow-md shadow-indigo-200 dark:shadow-indigo-900/30"
+              >
+                <Edit3 size={16} />
+                Editar Libro
+              </button>
+            </div>
           ) : (
             <div className="flex items-center gap-3">
               <button
@@ -356,13 +407,30 @@ export default function LibroDetail() {
                               }`}>{ej.estado}</span>
                             </td>
                             <td className="px-4 py-2.5 text-center">
-                              <button
-                                onClick={() => setEditEj({ id: ej.id, codigoInterno: ej.codigoInterno, tipoMaterial: ej.tipoMaterial || '', ubicacion: ej.ubicacion || '', codigoEstante: ej.codigoEstante || '', estado: ej.estado })}
-                                className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-all"
-                                title="Editar ejemplar"
-                              >
-                                <Edit3 size={16} />
-                              </button>
+                              <div className="flex items-center justify-center gap-1">
+                                <button
+                                  onClick={() => setEditEj({ id: ej.id, codigoInterno: ej.codigoInterno, tipoMaterial: ej.tipoMaterial || '', ubicacion: ej.ubicacion || '', codigoEstante: ej.codigoEstante || '', estado: ej.estado })}
+                                  className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-all"
+                                  title="Editar ejemplar"
+                                >
+                                  <Edit3 size={16} />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    toast(`¿Eliminar ejemplar "${ej.codigoInterno}"?`, {
+                                      action: {
+                                        label: 'Eliminar',
+                                        onClick: () => eliminarEjemplar.mutate({ ids: [ej.id] }),
+                                      },
+                                      duration: 6000,
+                                    });
+                                  }}
+                                  className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-all"
+                                  title="Eliminar ejemplar"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
                             </td>
                           </tr>
                         ))}
