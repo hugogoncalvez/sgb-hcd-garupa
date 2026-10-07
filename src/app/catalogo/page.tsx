@@ -230,7 +230,7 @@ export default function CatalogoList() {
                         </span>
                       </td>
                       <td className="px-8 py-6">
-                        <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => setDetalleLibro(libro)}
                             className="p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 dark:hover:bg-sky-500/10 rounded-lg transition-all"

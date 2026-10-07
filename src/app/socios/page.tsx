@@ -130,7 +130,7 @@ export default function SociosList() {
                         </span>
                       </td>
                       <td className="px-8 py-6">
-                        <div className="flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                           <Link
                             href={`/socios/${socio.id}`}
                             className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-all inline-flex"
