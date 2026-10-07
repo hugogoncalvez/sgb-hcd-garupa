@@ -20,6 +20,7 @@ export const reportesRouter = router({
         libros,
         sociosList,
         prestamosCount,
+        ejemplares,
       ] = await Promise.all([
         ctx.prisma.prestamo.findMany({
           where: {
@@ -46,8 +47,6 @@ export const reportesRouter = router({
             id: true,
             titulo: true,
             autor: true,
-            ubicacion: true,
-            tipoMaterial: true,
             anioPublicacion: true,
             editorial: true,
             idioma: true,
@@ -65,6 +64,9 @@ export const reportesRouter = router({
         ctx.prisma.prestamo.groupBy({
           by: ['estado'],
           _count: true,
+        }),
+        ctx.prisma.ejemplar.findMany({
+          select: { ubicacion: true, tipoMaterial: true },
         }),
       ]);
 
@@ -124,11 +126,13 @@ export const reportesRouter = router({
 
       const ubicacionCount: Record<string, number> = {};
       const tipoCount: Record<string, number> = {};
-      for (const l of libros) {
-        const ubi = l.ubicacion ?? 'Sin especificar';
-        ubicacionCount[ubi] = (ubicacionCount[ubi] ?? 0) + l.cantidadEjemplares;
-        const tipo = l.tipoMaterial ?? 'Sin especificar';
-        tipoCount[tipo] = (tipoCount[tipo] ?? 0) + l.cantidadEjemplares;
+      for (const e of ejemplares) {
+        const ubiRaw = e.ubicacion?.trim() ?? '';
+        const ubi = ubiRaw !== '' ? ubiRaw : 'Sin especificar';
+        ubicacionCount[ubi] = (ubicacionCount[ubi] ?? 0) + 1;
+        const tipoRaw = e.tipoMaterial?.trim() ?? '';
+        const tipo = tipoRaw !== '' ? tipoRaw : 'Sin especificar';
+        tipoCount[tipo] = (tipoCount[tipo] ?? 0) + 1;
       }
       const inventarioPorUbicacion = Object.entries(ubicacionCount)
         .map(([ubicacion, cantidad]) => ({ ubicacion, cantidad }))
