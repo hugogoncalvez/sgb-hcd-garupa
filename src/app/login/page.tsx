@@ -124,7 +124,7 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-8 text-center text-slate-400 dark:text-slate-500 text-xs font-bold italic">
-          &ldquo;La biblioteca es el corazón de la comunidad.&rdquo;
+          &ldquo;Gestionando el saber que impulsa nuestro futuro.&rdquo;
         </p>
       </div>
     </div>
