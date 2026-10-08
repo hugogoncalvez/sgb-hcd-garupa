@@ -65,10 +65,10 @@ export default function Dashboard() {
         </div>
 
         {/* Vencimientos próximos */}
-        <section className="bg-white dark:bg-slate-800 rounded-[2rem] border border-amber-200 dark:border-amber-500/20 p-4 md:p-8 shadow-xl shadow-amber-100/30 dark:shadow-black/50">
+        <section className="group bg-white dark:bg-slate-800 rounded-[2rem] border border-amber-200 dark:border-amber-500/20 p-4 md:p-8 shadow-xl shadow-amber-100/30 dark:shadow-black/50 hover:border-amber-400 dark:hover:border-amber-500/60 hover:shadow-amber-200 dark:hover:shadow-amber-500/20 transition-all duration-500">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center">
-              <AlertCircle className="text-amber-600" size={22} />
+            <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+              <AlertCircle className="text-amber-600 group-hover:animate-pulse" size={22} />
             </div>
             <div>
               <h2 className="text-xl font-black text-slate-900 dark:text-white font-display">
