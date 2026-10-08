@@ -33,7 +33,7 @@ export function Sidebar({ open, onClose }: { open: boolean; onClose: () => void 
         className={`fixed inset-0 bg-slate-900/50 z-40 lg:hidden transition-opacity ${open ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       />
       <aside className={`h-dvh w-64 fixed left-0 top-0 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 flex flex-col p-4 gap-2 z-50 transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-      <div className="flex items-center gap-3 px-2 pb-6 flex-shrink-0">
+      <div className="flex items-center gap-3 px-2 pb-4 flex-shrink-0">
         <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-700 flex items-center justify-center shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 overflow-hidden p-0.5 border border-slate-100 dark:border-slate-700">
           <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
         </div>
