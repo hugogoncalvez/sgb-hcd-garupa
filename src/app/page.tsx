@@ -185,7 +185,7 @@ function MetricCard({ title, value, icon, color, label, isLoading }: any) {
   };
 
   return (
-    <div className={`p-4 md:p-8 rounded-[2rem] border border-slate-100 dark:border-slate-700 relative overflow-hidden group hover:shadow-2xl dark:hover:shadow-indigo-500/20 transition-all duration-500 shadow-sm dark:shadow-black/50 bg-white dark:bg-slate-800`}>
+    <div className={`p-4 md:p-8 rounded-[2rem] border border-slate-100 dark:border-slate-700 relative overflow-hidden group hover:shadow-2xl hover:border-indigo-300 dark:hover:border-indigo-500 dark:hover:shadow-indigo-500/20 transition-all duration-500 shadow-sm dark:shadow-black/50 bg-white dark:bg-slate-800`}>
       <div className="relative z-10">
         <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg rotate-3 group-hover:rotate-0 transition-transform duration-500 ${colorStyles[color].split(' ')[0]}`}>
           {icon}
