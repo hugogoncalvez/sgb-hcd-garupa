@@ -119,10 +119,11 @@ export default function LoginPage() {
         <div className="mt-8 text-center">
           <a
             href="/consulta-publica"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 font-black text-sm transition-all border border-indigo-200 dark:border-indigo-500/20 shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-[0.97]"
+            className="relative inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 font-black text-sm transition-all border border-indigo-200 dark:border-indigo-500/20 shadow-md shadow-indigo-200 dark:shadow-indigo-900/40 hover:shadow-lg overflow-visible"
           >
-            <Search size={18} />
-            Consultar Catálogo Público
+            <span className="absolute inset-0 rounded-xl bg-indigo-400 animate-ping opacity-20 pointer-events-none" />
+            <Search size={18} className="relative" />
+            <span className="relative">Consultar Catálogo Público</span>
           </a>
         </div>
 
