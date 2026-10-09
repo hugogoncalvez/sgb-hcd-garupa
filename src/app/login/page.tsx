@@ -54,8 +54,8 @@ export default function LoginPage() {
           <div className="w-24 h-24 bg-white dark:bg-slate-700 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 mb-4 overflow-hidden flex items-center justify-center p-1">
             <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">SGB</h1>
-          <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs mt-1">Acceso Administrativo</p>
+          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter text-center">Biblioteca Hugo Lopresti</h1>
+          <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs mt-1">Concejo Deliberante de Garupá</p>
         </div>
 
         {error && (
