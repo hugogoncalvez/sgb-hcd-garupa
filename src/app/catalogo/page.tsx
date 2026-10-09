@@ -152,7 +152,7 @@ export default function CatalogoList() {
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
-                <tr className="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
+                <tr className="bg-slate-100 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700">
                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">ISBN / Código</th>
                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Título</th>
                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">Vol.</th>
@@ -163,7 +163,7 @@ export default function CatalogoList() {
                   <th className="px-8 py-5 text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest text-center">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50 dark:divide-slate-700/50">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-700/50">
                 {isLoading ? (
                   Array.from({ length: 5 }).map((_, i) => (
                     <tr key={i}>
@@ -189,13 +189,13 @@ export default function CatalogoList() {
                   </tr>
                 ) : (
                   libros?.map((libro) => (
-                    <tr key={libro.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition-colors group">
+                    <tr key={libro.id} className="odd:bg-slate-100/60 dark:odd:bg-slate-800/30 hover:bg-indigo-50 dark:hover:bg-slate-700/30 transition-colors group">
                       <td className="px-8 py-6 text-sm font-bold text-indigo-600">
                         {libro.isbn || <span className="text-slate-300 dark:text-slate-600">—</span>}
                       </td>
                       <td className="px-8 py-6">
                         <div className="flex items-center gap-4">
-                          <div className="w-10 h-14 bg-slate-100 dark:bg-slate-700 rounded-lg flex-shrink-0 flex items-center justify-center border border-slate-200 dark:border-slate-600 overflow-hidden shadow-sm group-hover:shadow-md transition-shadow">
+                          <div className="w-12 h-16 bg-white dark:bg-slate-700 rounded-lg flex-shrink-0 flex items-center justify-center border border-slate-300 dark:border-slate-600 overflow-hidden shadow group-hover:shadow-md transition-shadow">
                              {libro.portadaUrl ? (
                                 <img src={libro.portadaUrl} alt={libro.titulo || 'Portada'} className="w-full h-full object-contain" />
                               ) : (
@@ -203,18 +203,18 @@ export default function CatalogoList() {
                               )}
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">{libro.titulo || 'Sin título'}</p>
+                            <p className="font-bold text-slate-800 dark:text-white group-hover:text-indigo-600 transition-colors">{libro.titulo || 'Sin título'}</p>
                             {libro.anioPublicacion && <p className="text-xs font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{libro.anioPublicacion}</p>}
                           </div>
                         </div>
                       </td>
-                      <td className="px-8 py-6 text-sm text-slate-500 dark:text-slate-400 font-semibold text-center">
+                      <td className="px-8 py-6 text-sm text-slate-700 dark:text-slate-300 font-semibold text-center">
                         {libro.volumen || '—'}
                       </td>
-                      <td className="px-8 py-6 text-sm text-slate-600 dark:text-slate-400 font-semibold">
+                      <td className="px-8 py-6 text-sm text-slate-700 dark:text-slate-300 font-semibold">
                         {libro.autor || <span className="text-slate-300 dark:text-slate-600">—</span>}
                       </td>
-                      <td className="px-8 py-6 text-sm text-slate-600 dark:text-slate-400 font-medium">
+                      <td className="px-8 py-6 text-sm text-slate-700 dark:text-slate-300 font-medium">
                         {libro.editorial || <span className="text-slate-300 dark:text-slate-600">—</span>}
                       </td>
                       <td className="px-8 py-6 text-center font-bold text-slate-700 dark:text-slate-300">
