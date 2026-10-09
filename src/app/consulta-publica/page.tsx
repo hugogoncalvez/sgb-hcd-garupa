@@ -49,7 +49,7 @@ export default function ConsultaPublica() {
                 <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
               </div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-black tracking-tight">SGB</h1>
+                <h1 className="text-3xl md:text-5xl font-black tracking-tight">Biblioteca Hugo Lopresti</h1>
                 <p className="text-indigo-200 font-bold text-sm uppercase tracking-widest mt-1">Catálogo Público</p>
               </div>
             </div>
