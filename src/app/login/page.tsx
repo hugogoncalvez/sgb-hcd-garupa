@@ -76,7 +76,7 @@ export default function LoginPage() {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 dark:focus:ring-indigo-900/30 rounded-2xl py-4 px-5 outline-none transition-all text-slate-800 dark:text-slate-200 font-bold shadow-inner"
+              className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 dark:focus:ring-indigo-900/30 rounded-2xl py-3 md:py-4 px-5 outline-none transition-all text-slate-800 dark:text-slate-200 font-bold shadow-inner"
               placeholder="Ingrese su usuario"
               required
               autoFocus
@@ -92,7 +92,7 @@ export default function LoginPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 dark:focus:ring-indigo-900/30 rounded-2xl py-4 px-5 pr-14 outline-none transition-all text-slate-800 dark:text-slate-200 font-bold shadow-inner"
+                className="w-full bg-slate-50 dark:bg-slate-800/50 border-2 border-slate-100 dark:border-slate-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-50 dark:focus:ring-indigo-900/30 rounded-2xl py-3 md:py-4 px-5 pr-14 outline-none transition-all text-slate-800 dark:text-slate-200 font-bold shadow-inner"
                 placeholder="••••••••"
                 required
               />
@@ -110,7 +110,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-2xl transition-all active:scale-[0.97] shadow-xl shadow-indigo-200 dark:shadow-indigo-900/30 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-4 md:py-5 rounded-2xl transition-all active:scale-[0.97] shadow-xl shadow-indigo-200 dark:shadow-indigo-900/30 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Validando...' : 'Entrar al Sistema'}
           </button>
@@ -119,7 +119,7 @@ export default function LoginPage() {
         <div className="mt-8 text-center">
           <a
             href="/consulta-publica"
-            className="relative inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 font-black text-sm transition-all border border-indigo-200 dark:border-indigo-500/20 shadow-md shadow-indigo-200 dark:shadow-indigo-900/40 hover:shadow-lg overflow-visible"
+            className="relative inline-flex items-center gap-2 px-6 py-2.5 md:py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 font-black text-sm transition-all border border-indigo-200 dark:border-indigo-500/20 shadow-md shadow-indigo-200 dark:shadow-indigo-900/40 hover:shadow-lg overflow-visible"
           >
             <span className="absolute inset-0 rounded-xl bg-indigo-400/30 blur-md animate-pulse pointer-events-none" />
             <Search size={18} className="relative" />
