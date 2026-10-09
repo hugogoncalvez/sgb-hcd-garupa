@@ -1,10 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Bell, Sparkles, Moon, Sun, AlertTriangle, Menu } from 'lucide-react';
-import { useSession } from 'next-auth/react';
+import { Bell, Sparkles, Moon, Sun, AlertTriangle, Menu, Eye, EyeOff, X } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { trpc } from '@/utils/trpc';
 
 export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTitle?: string; onMenu?: () => void }) {
@@ -13,6 +14,39 @@ export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTit
   const router = useRouter();
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+  const [passOpen, setPassOpen] = useState(false);
+  const [currentPass, setCurrentPass] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [repeatPass, setRepeatPass] = useState('');
+  const [showPass, setShowPass] = useState(false);
+
+  const updatePassword = trpc.usuarios.updatePassword.useMutation({
+    onSuccess: () => {
+      toast.success('Contraseña actualizada, ingresá de nuevo');
+      setPassOpen(false);
+      signOut({ callbackUrl: '/login' });
+    },
+    onError: (error) => {
+      toast.error(error.message, { duration: 4000 });
+    },
+  });
+
+  const handlePasswordSubmit = () => {
+    if (!currentPass || !newPass || !repeatPass) {
+      toast.error('Completá los tres campos');
+      return;
+    }
+    if (newPass !== repeatPass) {
+      toast.error('La nueva contraseña no coincide');
+      return;
+    }
+    const userId = (session?.user as any)?.id;
+    if (!userId) {
+      toast.error('Sesión inválida, ingresá de nuevo');
+      return;
+    }
+    updatePassword.mutate({ userId, currentPassword: currentPass, newPassword: newPass });
+  };
 
   const { data: metrics } = trpc.circulacion.getMetrics.useQuery();
   const { data: vencidos } = trpc.circulacion.getVencidos.useQuery({ limit: 5 });
@@ -28,6 +62,7 @@ export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTit
   }, []);
 
   return (
+    <>
     <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 h-20 flex items-center justify-between px-4 md:px-8">
       <div className="flex items-center gap-3 md:gap-8 min-w-0">
         <button
@@ -143,11 +178,68 @@ export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTit
               <Sparkles size={10} /> {(session?.user as any)?.role || 'Admin'}
             </p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-100 dark:shadow-indigo-900/30">
+          <button
+            onClick={() => { setPassOpen(true); setCurrentPass(''); setNewPass(''); setRepeatPass(''); }}
+            title="Cambiar contraseña"
+            className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-100 dark:shadow-indigo-900/30 hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+          >
             {session?.user?.name?.charAt(0)}
-          </div>
+          </button>
         </div>
       </div>
     </header>
+
+    {/* Modal cambiar contraseña */}
+    {passOpen && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setPassOpen(false)}>
+        <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+          <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
+            <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Cambiar contraseña</h3>
+            <button onClick={() => setPassOpen(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400">
+              <X size={20} />
+            </button>
+          </div>
+          <div className="p-6 space-y-4">
+            {[
+              { label: 'Contraseña actual', value: currentPass, set: setCurrentPass },
+              { label: 'Nueva contraseña (mín. 6 caracteres)', value: newPass, set: setNewPass },
+              { label: 'Repetir nueva contraseña', value: repeatPass, set: setRepeatPass },
+            ].map(f => (
+              <div key={f.label}>
+                <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">{f.label}</p>
+                <div className="relative">
+                  <input
+                    type={showPass ? 'text' : 'password'}
+                    value={f.value}
+                    onChange={e => f.set(e.target.value)}
+                    className="w-full px-4 py-3 pr-12 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl font-bold text-sm outline-none focus:ring-2 focus:ring-indigo-100"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPass(!showPass)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-indigo-600 transition-colors"
+                  >
+                    {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-slate-100 dark:border-slate-700">
+            <button onClick={() => setPassOpen(false)} className="px-4 py-2 text-sm font-bold text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all">
+              Cancelar
+            </button>
+            <button
+              onClick={handlePasswordSubmit}
+              disabled={updatePassword.isPending}
+              className="px-6 py-2 bg-indigo-600 text-white rounded-xl font-bold text-sm hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50"
+            >
+              {updatePassword.isPending ? 'Guardando...' : 'Guardar'}
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }
