@@ -121,7 +121,7 @@ export default function LoginPage() {
             href="/consulta-publica"
             className="relative inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 font-black text-sm transition-all border border-indigo-200 dark:border-indigo-500/20 shadow-md shadow-indigo-200 dark:shadow-indigo-900/40 hover:shadow-lg overflow-visible"
           >
-            <span className="absolute inset-0 rounded-xl bg-indigo-400 animate-ping opacity-20 pointer-events-none" />
+            <span className="absolute inset-0 rounded-xl bg-indigo-400/30 blur-md animate-pulse pointer-events-none" />
             <Search size={18} className="relative" />
             <span className="relative">Consultar Catálogo Público</span>
           </a>
