@@ -50,13 +50,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 p-10">
-        <div className="flex flex-col items-center mb-10">
-          <div className="w-24 h-24 bg-white dark:bg-slate-700 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 mb-4 overflow-hidden flex items-center justify-center p-1">
+        <div className="flex items-center justify-center gap-4 mb-10">
+          <div className="w-24 h-24 bg-white dark:bg-slate-700 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 overflow-hidden flex items-center justify-center p-1 flex-shrink-0">
             <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
           </div>
-          <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter text-center">Biblioteca Hugo Lopresti</h1>
-          <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs mt-1">Acceso Administrativo</p>
+          <div>
+            <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">Biblioteca</h1>
+            <p className="text-2xl font-black text-indigo-600 tracking-tight mt-1">Hugo Lopresti</p>
+          </div>
         </div>
+        <p className="text-center text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs -mt-6 mb-10">Acceso Administrativo</p>
 
         {error && (
           <div className="mb-8 p-4 bg-rose-50 dark:bg-rose-500/10 border-l-4 border-rose-500 text-rose-700 dark:text-rose-300 text-sm font-bold rounded-r-xl animate-bounce">
