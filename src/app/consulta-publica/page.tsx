@@ -53,7 +53,7 @@ export default function ConsultaPublica() {
           </a>
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-1 shadow-lg">
+              <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-1 shadow-lg flex-shrink-0">
                 <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />
               </div>
               <div>
