@@ -19,7 +19,7 @@ export function Button({
   const variants = {
     primary: 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-200 active:scale-95 dark:shadow-indigo-900/30',
     secondary: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-200 active:scale-95 dark:shadow-emerald-900/30',
-    outline: 'border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-500 hover:text-indigo-600 bg-white dark:bg-slate-800 active:scale-95',
+    outline: 'border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-indigo-500 hover:text-indigo-600 bg-stone-50 dark:bg-slate-800 active:scale-95',
     ghost: 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-95'
   };
 

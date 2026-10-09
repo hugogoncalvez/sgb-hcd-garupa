@@ -138,7 +138,7 @@ export default function SocioDetail() {
         </div>
 
         {/* Profile Header */}
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 p-5 md:p-10 text-white relative overflow-hidden">
             <div className="relative z-10 flex items-center gap-8">
               <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-black backdrop-blur-sm">
@@ -225,7 +225,7 @@ export default function SocioDetail() {
             <History className="text-indigo-600" size={28} />
             <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Actividad de Préstamos</h3>
           </div>
-          <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
@@ -328,7 +328,7 @@ function StatCard({ icon, label, value, color }: { icon: React.ReactNode, label:
   };
 
   return (
-    <div className="p-5 rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800/50">
+    <div className="p-5 rounded-2xl border border-slate-100 dark:border-slate-700 bg-stone-50 dark:bg-slate-800/50">
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${colorMap[color]}`}>
         {icon}
       </div>

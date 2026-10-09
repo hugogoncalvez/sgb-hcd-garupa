@@ -91,7 +91,7 @@ export default function ConsultaPublica() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 -mt-8 pb-16">
         {/* Stats bar */}
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl px-8 py-5 mb-8 flex items-center gap-8">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl px-8 py-5 mb-8 flex items-center gap-8">
           <div className="flex items-center gap-3">
             <BookOpen size={20} className="text-indigo-600" />
             <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
@@ -109,7 +109,7 @@ export default function ConsultaPublica() {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 overflow-hidden">
+              <div key={i} className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 overflow-hidden">
                 <div className="aspect-[4/3] skeleton"></div>
                 <div className="p-5 space-y-3">
                   <div className="h-4 w-3/4 skeleton rounded"></div>
@@ -120,7 +120,7 @@ export default function ConsultaPublica() {
             ))}
           </div>
         ) : libros?.length === 0 ? (
-          <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-16 text-center">
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-16 text-center">
             <BookOpen size={48} className="mx-auto text-slate-300 dark:text-slate-600 mb-4" />
             <p className="text-slate-400 dark:text-slate-500 font-bold text-lg">
               {searchDebounced ? 'No se encontraron libros para tu búsqueda.' : 'No hay libros en el inventario.'}
@@ -134,7 +134,7 @@ export default function ConsultaPublica() {
                 <button
                   key={libro.id}
                   onClick={() => setDetalleLibro(libro)}
-                  className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left group"
+                  className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 text-left group"
                 >
                   {/* Cover */}
                   <div className="aspect-[4/3] bg-slate-100 dark:bg-slate-700 relative overflow-hidden">
@@ -219,7 +219,7 @@ export default function ConsultaPublica() {
       {/* Detail Modal */}
       {detalleLibro && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setDetalleLibro(null)}>
-          <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-slate-700">
               <div className="flex items-center gap-3">
                 <BookOpen size={22} className="text-indigo-600" />

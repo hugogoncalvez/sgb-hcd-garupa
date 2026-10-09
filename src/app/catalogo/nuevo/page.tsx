@@ -271,7 +271,7 @@ export default function NuevoLibro() {
         </nav>
 
         {/* Registration Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden border border-slate-100 dark:border-slate-700">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-none overflow-hidden border border-slate-100 dark:border-slate-700">
           <div className="p-5 md:p-10 md:p-16">
             <div className="flex flex-col md:flex-row gap-16">
               {/* Left: Book Cover Placeholder */}
@@ -743,7 +743,7 @@ export default function NuevoLibro() {
       {/* Modal de selección de resultados */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowModal(false)}>
-          <div className="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border border-slate-200 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-3xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden border border-slate-200 dark:border-slate-700" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Resultados de búsqueda</h3>

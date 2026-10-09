@@ -120,7 +120,7 @@ export default function CatalogoList() {
         </div>
 
         {/* Actions Bar */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-stone-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-wrap items-center gap-4">
             <div className="relative group flex-grow max-w-2xl">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
@@ -148,7 +148,7 @@ export default function CatalogoList() {
         </div>
 
         {/* Data Table */}
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>
@@ -314,7 +314,7 @@ export default function CatalogoList() {
       {/* Modal Detalle */}
       {detalleLibro && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setDetalleLibro(null)}>
-          <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
             {/* Header */}
             <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 dark:border-slate-700">
               <div className="flex items-center gap-3">
@@ -511,7 +511,7 @@ export default function CatalogoList() {
       {/* Modal eliminar ejemplares */}
       {deleteTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setDeleteTarget(null)}>
-          <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+          <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-lg max-h-[80vh] overflow-hidden border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
               <div>
                 <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Eliminar ejemplares</h3>
@@ -626,7 +626,7 @@ function StatMiniCard({ title, value, icon, color }: any) {
   };
 
   return (
-    <div className={`p-6 rounded-[2rem] bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-6 relative overflow-hidden group hover:shadow-lg transition-all duration-500`}>
+    <div className={`p-6 rounded-[2rem] bg-stone-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm flex items-center gap-6 relative overflow-hidden group hover:shadow-lg transition-all duration-500`}>
       <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-sm z-10 transition-transform group-hover:scale-110 ${colorStyles[color]}`}>
         {icon}
       </div>

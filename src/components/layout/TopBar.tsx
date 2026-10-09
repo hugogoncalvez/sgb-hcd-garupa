@@ -109,7 +109,7 @@ export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTit
             </button>
 
             {notifOpen && (
-              <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-2xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+              <div className="absolute right-0 mt-2 w-80 max-w-[calc(100vw-2rem)] bg-stone-50 dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-2xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
                 <div className="p-4 border-b border-slate-100 dark:border-slate-700">
                   <p className="text-sm font-black text-slate-900 dark:text-white flex items-center gap-2">
                     <AlertTriangle size={16} className="text-rose-500" />
@@ -192,7 +192,7 @@ export function TopBar({ title, shortTitle, onMenu }: { title?: string; shortTit
     {/* Modal cambiar contraseña */}
     {passOpen && (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setPassOpen(false)}>
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
             <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Cambiar contraseña</h3>
             <button onClick={() => setPassOpen(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400">

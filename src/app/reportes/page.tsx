@@ -459,7 +459,7 @@ export default function ReportesPage() {
                 type="date"
                 value={fechaDesde}
                 onChange={(e) => setFechaDesde(e.target.value)}
-                className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
             <div>
@@ -468,7 +468,7 @@ export default function ReportesPage() {
                 type="date"
                 value={fechaHasta}
                 onChange={(e) => setFechaHasta(e.target.value)}
-                className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-stone-50 dark:bg-slate-800 text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
           </div>
@@ -477,7 +477,7 @@ export default function ReportesPage() {
         {isLoading ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-sm">
+              <div key={i} className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 skeleton rounded-xl" />
                   <div className="h-6 w-40 skeleton rounded-xl" />
@@ -492,7 +492,7 @@ export default function ReportesPage() {
             {reportCards.map((card) => (
               <div
                 key={card.id}
-                className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-sm hover:shadow-xl transition-shadow"
+                className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 p-4 md:p-8 shadow-sm hover:shadow-xl transition-shadow"
               >
                 <div className="flex items-center gap-3 mb-1">
                   {card.icon}

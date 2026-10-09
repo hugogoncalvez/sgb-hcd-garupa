@@ -49,7 +49,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 p-10">
+      <div className="max-w-md w-full bg-stone-50 dark:bg-slate-800 rounded-[2.5rem] shadow-2xl border border-slate-100 dark:border-slate-700 p-10">
         <div className="flex items-center justify-center gap-8 mb-10">
           <div className="w-24 h-24 bg-white dark:bg-slate-700 rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 overflow-hidden flex items-center justify-center p-1 flex-shrink-0">
             <img src="/logo.png" alt="SGB" className="w-full h-full object-contain" />

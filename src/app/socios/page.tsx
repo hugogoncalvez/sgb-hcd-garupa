@@ -36,7 +36,7 @@ export default function SociosList() {
     <MainLayout title="Directorio de Miembros" shortTitle="Socios">
       <div className="space-y-8">
         {/* Actions Bar */}
-        <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-stone-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
             <div className="relative group w-full md:w-auto md:min-w-[320px]">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
@@ -64,7 +64,7 @@ export default function SociosList() {
         </div>
 
         {/* Data Table */}
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>

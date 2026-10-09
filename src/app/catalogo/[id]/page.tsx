@@ -259,7 +259,7 @@ export default function LibroDetail() {
           )}
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="bg-gradient-to-r from-indigo-600 to-indigo-800 p-5 md:p-10 text-white relative overflow-hidden">
             <div className="relative z-10 flex items-center gap-8">
               <div className="w-20 h-20 rounded-2xl bg-white/20 flex items-center justify-center text-3xl font-black backdrop-blur-sm overflow-hidden flex-shrink-0">
@@ -450,7 +450,7 @@ export default function LibroDetail() {
         {/* Modal agregar ejemplar */}
         {showAddEjemplar && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setShowAddEjemplar(false)}>
-            <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+            <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Agregar Ejemplar</h3>
                 <button onClick={() => setShowAddEjemplar(false)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400">
@@ -518,7 +518,7 @@ export default function LibroDetail() {
         {/* Modal editar ejemplar */}
         {editEj && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setEditEj(null)}>
-            <div className="bg-white dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
+            <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] shadow-2xl w-full max-w-md border border-slate-100 dark:border-slate-700" onClick={e => e.stopPropagation()}>
               <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100 dark:border-slate-700">
                 <h3 className="text-lg font-black text-slate-800 dark:text-slate-200">Editar Ejemplar</h3>
                 <button onClick={() => setEditEj(null)} className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all text-slate-400">

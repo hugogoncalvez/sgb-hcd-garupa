@@ -91,7 +91,7 @@ export default function PrestamosPage() {
         {/* Left Column: Selection */}
         <div className="col-span-12 lg:col-span-7 space-y-8">
           {/* Socio Selection */}
-          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
+          <section className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
             <div className="flex items-center gap-3 mb-6">
               <UserSearch className="text-indigo-600" size={28} />
               <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Identificación del Socio</h3>
@@ -114,7 +114,7 @@ export default function PrestamosPage() {
                 )}
                 
                 {socioSearch.length > 2 && !selectedSocio && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto overflow-x-hidden">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-stone-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto overflow-x-hidden">
                     {buscandoSocio ? (
                       <div className="p-4 flex items-center gap-3 text-slate-400">
                         <Loader2 size={18} className="animate-spin" />
@@ -161,7 +161,7 @@ export default function PrestamosPage() {
           </section>
 
           {/* Libro Selection */}
-          <section className="bg-white dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
+          <section className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] p-4 md:p-8 shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 transition-all focus-within:ring-4 focus-within:ring-indigo-50 dark:focus-within:ring-indigo-900/30">
             <div className="flex items-center gap-3 mb-6">
               <BookMarked className="text-indigo-600" size={28} />
               <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Ejemplar de la Colección</h3>
@@ -184,7 +184,7 @@ export default function PrestamosPage() {
                 )}
 
                 {libroSearch.length > 2 && !selectedLibro && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto overflow-x-hidden">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-stone-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl shadow-2xl z-20 max-h-60 overflow-y-auto overflow-x-hidden">
                     {buscandoLibro ? (
                       <div className="p-4 flex items-center gap-3 text-slate-400">
                         <Loader2 size={18} className="animate-spin" />
@@ -242,7 +242,7 @@ export default function PrestamosPage() {
 
         {/* Right Column: Transaction Summary */}
         <div className="col-span-12 lg:col-span-5">
-          <div className="sticky top-28 bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-100 dark:shadow-indigo-900/20 border border-slate-100 dark:border-slate-700">
+          <div className="sticky top-28 bg-stone-50 dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-indigo-100 dark:shadow-indigo-900/20 border border-slate-100 dark:border-slate-700">
             <div className="bg-indigo-600 p-4 md:p-8 text-white relative overflow-hidden">
               <div className="relative z-10">
                 <h3 className="text-2xl font-black font-display">Resumen de Operación</h3>
@@ -312,7 +312,7 @@ export default function PrestamosPage() {
           <History className="text-indigo-600" size={28} />
           <h3 className="text-xl font-black text-slate-900 dark:text-white font-display">Historial de Préstamos</h3>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
+        <div className="bg-stone-50 dark:bg-slate-800 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/40 dark:shadow-none overflow-hidden">
           <div className="p-4 border-b border-slate-100 dark:border-slate-700 flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="relative max-w-sm flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
