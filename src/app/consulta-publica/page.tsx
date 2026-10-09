@@ -6,6 +6,7 @@ import {
   BookOpen,
   Library,
   Lock,
+  ArrowLeft,
   X,
   ChevronLeft,
   ChevronRight,
@@ -43,6 +44,13 @@ export default function ConsultaPublica() {
       {/* Hero */}
       <div className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 text-white">
         <div className="max-w-7xl mx-auto px-6 py-16 md:py-24">
+          <a
+            href="/login"
+            title="Acceso administrativo"
+            className="sm:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all mb-4"
+          >
+            <ArrowLeft size={18} />
+          </a>
           <div className="flex items-center justify-between gap-4 mb-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 bg-white rounded-2xl overflow-hidden flex items-center justify-center p-1 shadow-lg">
@@ -56,10 +64,10 @@ export default function ConsultaPublica() {
             <a
               href="/login"
               title="Acceso administrativo"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 font-bold text-sm transition-all flex-shrink-0"
+              className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 font-bold text-sm transition-all flex-shrink-0"
             >
               <Lock size={16} />
-              <span className="hidden sm:inline">Acceso administrativo</span>
+              <span>Acceso administrativo</span>
             </a>
           </div>
           <p className="text-indigo-100 text-lg max-w-xl mt-4">
