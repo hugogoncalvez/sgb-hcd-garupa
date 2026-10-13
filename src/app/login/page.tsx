@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Search, ArrowLeft, ArrowRight, LogIn, User as UserIcon, BadgeCheck, Wifi } from 'lucide-react';
+import { Eye, EyeOff, Search, ArrowLeft, ArrowRight, LogIn, AlertCircle, User as UserIcon, BadgeCheck } from 'lucide-react';
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
