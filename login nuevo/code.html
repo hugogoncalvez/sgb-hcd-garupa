@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Biblioteca Hugo Lopresti - HCD Garupá | Sistema de Gestión y Catálogo</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"EB Garamond"', 'serif'],
+            display: ['Cinzel', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            hcd: {
+              navy: '#0c1527',
+              deep: '#070c16',
+              cyan: '#0284c7',
+              accent: '#38bdf8',
+              hover: '#0369a1',
+            },
+            parchment: {
+              50: '#fdfbf7',
+              100: '#f9f5ec',
+              200: '#f3ebd9',
+              300: '#e7dcbf',
+              800: '#5c4d37',
+              900: '#32281a',
+            },
+            gold: {
+              DEFAULT: '#c5a059',
+              light: '#e6ca85',
+              dark: '#967432',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Efecto 3D de libro */
+    .perspective-container {
+      perspective: 2000px;
+    }
+    
+    .book-wrapper {
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* Animación de cierre del libro */
+    .book-closed {
+      transform: rotateY(-35deg) scale(0.92);
+    }
+
+    /* Páginas 3D y volteo */
+    .flipper-page {
+      transform-style: preserve-3d;
+      transform-origin: left center;
+      transition: transform 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flipper-page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    .page-face {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .page-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Lomo y sombreados realistas */
+    .book-spine-shadow {
+      box-shadow: inset 24px 0 35px -10px rgba(12, 21, 39, 0.35);
+    }
+    .book-spine-shadow-right {
+      box-shadow: inset -24px 0 35px -10px rgba(12, 21, 39, 0.35);
+    }
+
+    /* Decoraciones de papel apergaminado y textura sutil */
+    .bg-parchment-pattern {
+      background-color: #faf5eb;
+      background-image: 
+        radial-gradient(#d6c29e 0.75px, transparent 0.75px),
+        radial-gradient(#e0cfb1 0.75px, #faf5eb 0.75px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+
+    /* Canto de hojas apiladas */
+    .page-stack-left {
+      box-shadow: 
+        -3px 0 0 #f0e6d2,
+        -6px 0 0 #dfd1b8,
+        -9px 0 0 #cfbea0,
+        -14px 10px 25px rgba(4, 9, 20, 0.55);
+    }
+
+    .page-stack-right {
+      box-shadow: 
+        3px 0 0 #f0e6d2,
+        6px 0 0 #dfd1b8,
+        9px 0 0 #cfbea0,
+        14px 10px 25px rgba(4, 9, 20, 0.55);
+    }
+
+    /* Sellos de tinta */
+    @keyframes stampIn {
+      0% { transform: scale(2.2) rotate(-15deg); opacity: 0; }
+      70% { transform: scale(0.95) rotate(-3deg); opacity: 0.95; }
+      100% { transform: scale(1) rotate(-4deg); opacity: 0.9; }
+    }
+
+    .stamp-anim {
+      animation: stampIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Partículas de polvo de biblioteca */
+    .dust-particle {
+      position: absolute;
+      background: rgba(147, 197, 253, 0.35);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: floatDust 12s infinite linear;
+    }
+
+    @keyframes floatDust {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      20% { opacity: 0.7; }
+      80% { opacity: 0.7; }
+      100% { transform: translateY(-20px) translateX(40px); opacity: 0; }
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#070c16] text-[#2c2214] font-sans antialiased overflow-x-hidden relative flex flex-col justify-between selection:bg-[#0284c7] selection:text-white">
+<!-- Fondo Ambiental Institucional - Azul Marino Profundo con Aureola Lumínica -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#0f243e]/70 via-[#0a1220] to-[#04070e]"></div>
+<!-- Luces cian y doradas sutiles -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[960px] h-[550px] bg-[#0284c7]/15 rounded-full blur-[140px]"></div>
+<div class="absolute bottom-10 left-10 w-[450px] h-[450px] bg-[#1e3a8a]/20 rounded-full blur-[110px]"></div>
+<div class="absolute bottom-10 right-10 w-[350px] h-[350px] bg-[#c5a059]/10 rounded-full blur-[120px]"></div>
+</div>
+<!-- Polvo flotante ambiental en suspensión -->
+<div class="fixed inset-0 pointer-events-none z-0 overflow-hidden" id="particles-container"></div>
+<!-- Header Superior / Identidad del Sistema Institucional HCD Garupá -->
+<header class="relative z-10 w-full max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+<div class="flex items-center gap-3.5">
+<!-- Escudo / Monograma HCD Garupá -->
+<div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#0c2847] to-[#031526] border border-[#0284c7]/40 flex flex-col items-center justify-center text-white shadow-lg shadow-sky-950/40 relative overflow-hidden group">
+<div class="absolute inset-0 bg-sky-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-xs font-black tracking-wider text-[#38bdf8] leading-none">HCD</span>
+<span class="text-[8px] font-medium tracking-tight text-slate-300 scale-90 -mt-0.5">Garupá</span>
+<div class="w-5 h-0.5 bg-[#c5a059] rounded-full mt-0.5"></div>
+</div>
+<div>
+<div class="flex items-center gap-2.5">
+<h1 class="font-sans font-bold tracking-tight text-[#f1f5f9] text-base sm:text-lg flex items-center gap-2">
+            Biblioteca <span class="text-[#38bdf8] font-bold">Hugo Lopresti</span>
+</h1>
+<span class="text-[10px] font-sans font-semibold py-0.5 px-2 bg-sky-950/80 text-sky-300 border border-sky-600/40 rounded-full">HCD Garupá</span>
+</div>
+<p class="text-xs text-[#94a3b8] font-sans">Honorable Concejo Deliberante de Garupá • Sistema de Gestión y Catálogo</p>
+</div>
+</div>
+<!-- Indicador de Servidor y Botón Catálogo Rápido -->
+<div class="flex items-center gap-3 text-xs font-sans text-[#cbd5cc]">
+<a class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#0e213b] hover:bg-[#122e54] border border-[#0284c7]/50 text-[#38bdf8] hover:text-white font-medium transition-all shadow-md group" href="#catalogo-publico" onclick="openPublicCatalog(event)">
+<span class="material-symbols-outlined text-sm text-[#38bdf8] group-hover:scale-110 transition-transform">search</span>
+<span>Consultar Catálogo Público</span>
+</a>
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0a1626]/80 border border-[#1e3450] text-[#94a3b8]">
+<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+<span class="text-[11px]">Sistema Legislativo: <strong>En Línea</strong></span>
+</div>
+</div>
+</header>
+<!-- Contenedor Principal con el Libro 3D -->
+<main class="relative z-10 flex-1 flex flex-col items-center justify-center p-4 sm:p-6 my-1 perspective-container">
+<!-- EL LIBRO INTERACTIVO -->
+<div class="book-wrapper relative w-full max-w-[980px] h-[590px] transition-all duration-1000 ease-out" id="bookContainer">
+<!-- Encuadernación Externa / Tapa de Cuero Azul Marino Institucional -->
+<div class="absolute -inset-3 sm:-inset-4 bg-[#0a1426] rounded-xl shadow-2xl border-2 border-[#193256] pointer-events-none flex justify-between overflow-hidden">
+<!-- Textura de grano fino de cuero y ribetes dorados y celestes perimetrales -->
+<div class="absolute inset-0 bg-[radial-gradient(#122645_1.2px,transparent_1.2px)] [background-size:16px_16px] opacity-60"></div>
+<div class="absolute inset-1 border border-[#0284c7]/30 rounded-lg pointer-events-none"></div>
+<div class="absolute inset-2 border border-[#c5a059]/25 rounded-md pointer-events-none"></div>
+<!-- Esquinas repujadas en oro -->
+<div class="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-[#c5a059]/50 rounded-tl-sm pointer-events-none"></div>
+<div class="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-[#c5a059]/50 rounded-tr-sm pointer-events-none"></div>
+<div class="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-[#c5a059]/50 rounded-bl-sm pointer-events-none"></div>
+<div class="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-[#c5a059]/50 rounded-br-sm pointer-events-none"></div>
+<!-- Marcador de cinta de lectura de seda Celeste Municipal (Bookmark ribbon) -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-48 bg-gradient-to-b from-[#0284c7] to-[#034f7c] shadow-lg rounded-b-sm border-x border-[#38bdf8]/40 z-30 pointer-events-none flex items-end justify-center pb-1">
+<div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[8px] border-t-[#0284c7] absolute -bottom-2"></div>
+</div>
+</div>
+<!-- Lomo central metálico y hendidura del libro con detalles cian y oro -->
+<div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 bg-gradient-to-r from-[#071120] via-[#152742] to-[#071120] z-30 pointer-events-none shadow-2xl flex flex-col justify-between items-center py-4">
+<span class="w-2.5 h-2.5 rounded-full bg-[#38bdf8]/60 border border-[#0284c7]"></span>
+<div class="w-0.5 h-4/5 bg-gradient-to-b from-transparent via-[#38bdf8]/40 to-transparent"></div>
+<span class="w-2.5 h-2.5 rounded-full bg-[#c5a059]/60 border border-[#e6ca85]"></span>
+</div>
+<!-- ESTRUCTURA DEL CUERPO DEL LIBRO (Dos páginas abiertas) -->
+<div class="relative w-full h-full flex rounded-lg overflow-hidden bg-parchment-pattern border border-[#d2bf9f]">
+<!-- ================= PÁGINA IZQUIERDA (ESTÁTICA): FRONTISPICIO & CATÁLOGO PÚBLICO ================= -->
+<div class="w-1/2 h-full p-7 sm:p-9 flex flex-col justify-between border-r border-[#d4c1a3] relative page-stack-left bg-[#fcf8f0] book-spine-shadow-right select-none">
+<!-- Encabezado de Página Clásica -->
+<div class="border-b border-[#ddccb2] pb-3 flex items-center justify-between">
+<span class="text-xs uppercase font-serif tracking-[0.18em] text-[#637286]">HCD Garupá • Registro Oficial</span>
+<span class="text-xs font-serif italic text-[#8c7454]">Colección Lopresti</span>
+</div>
+<!-- Contenido Central Izquierdo: Grabado & Filosofía Institucional -->
+<div class="my-auto text-center px-2 py-2">
+<!-- Emblema de la Biblioteca Hugo Lopresti / HCD Garupá -->
+<div class="w-20 h-20 mx-auto mb-3 border-2 border-[#16365c] rounded-2xl p-1.5 flex items-center justify-center relative bg-gradient-to-br from-[#0c213a] to-[#071424] shadow-md">
+<div class="w-full h-full border border-sky-400/40 rounded-xl flex flex-col items-center justify-center text-white">
+<span class="text-[13px] font-extrabold tracking-wider text-[#38bdf8] leading-none">HCD</span>
+<span class="text-[8px] font-semibold text-slate-300">Garupá</span>
+<div class="w-4 h-0.5 bg-[#c5a059] mt-0.5"></div>
+</div>
+<span class="absolute -bottom-2 bg-[#fcf8f0] px-2 text-[9px] font-display text-[#16365c] tracking-widest uppercase border border-[#decbb0] rounded font-semibold">BIBLIOTECA</span>
+</div>
+<span class="text-[11px] font-sans uppercase tracking-[0.2em] font-semibold text-[#0284c7] block mb-1">
+              ACCESO ADMINISTRATIVO
+            </span>
+<h2 class="font-display text-xl sm:text-2xl font-bold tracking-wide text-[#111f33] mb-1">
+              LIBRO DE ACCESO Y REGISTRO
+            </h2>
+<div class="w-16 h-0.5 bg-[#0284c7] mx-auto mb-3"></div>
+<!-- Cita Oficial -->
+<p class="font-serif text-[#475569] text-sm leading-relaxed italic max-w-xs mx-auto mb-4">
+              «Gestionando el saber que impulsa nuestro futuro.»
+            </p>
+<!-- BOTÓN DESTACADO: CATÁLOGO PÚBLICO -->
+<div class="mt-2 mb-3">
+<a class="inline-flex items-center justify-center gap-2 w-full max-w-[270px] py-2.5 px-4 bg-[#0e213b] hover:bg-[#15345d] text-[#38bdf8] hover:text-white rounded-lg border border-[#0284c7]/60 shadow-md transition-all duration-200 text-xs font-sans font-semibold group cursor-pointer" href="#catalogo-publico" onclick="openPublicCatalog(event)">
+<span class="material-symbols-outlined text-base text-[#38bdf8] group-hover:scale-110 transition-transform">search</span>
+<span>Consultar Catálogo Público</span>
+</a>
+<p class="text-[10px] font-serif text-[#78889b] italic mt-1.5">
+                Acceso abierto a vecinos, estudiantes e investigadores
+              </p>
+</div>
+<!-- Sello Dinámico de Validación de Biblioteca -->
+<div class="min-h-[52px] flex items-center justify-center" id="leftPageStampArea">
+<div class="border border-[#1e3a5f]/40 bg-[#0e213b]/5 rounded-md p-2 text-center text-[#1e3a5f] max-w-[250px]">
+<div class="text-[10px] font-display tracking-widest uppercase font-semibold">Honorable Concejo Deliberante</div>
+<div class="text-[9px] font-serif text-[#486581]">Garupá, Misiones • Fondo Bibliográfico Oficial</div>
+</div>
+</div>
+</div>
+<!-- Pie de página Izquierda con instrucciones de teclado -->
+<div class="border-t border-[#ddccb2] pt-3 flex items-center justify-between text-xs font-serif text-[#64748b]">
+<span class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 bg-[#ede1cb] rounded border border-[#c5b191] text-[10px] font-sans text-[#334155]">Enter ↵</kbd>
+<span>Avanzar / Pasar página</span>
+</span>
+<span class="text-[11px] italic font-serif">Folio I</span>
+</div>
+</div>
+<!-- ================= PÁGINA DERECHA (BASE): PASO 2 - CONTRASEÑA ================= -->
+<!-- Esta página está visible cuando la hoja abatible pasa hacia la izquierda -->
+<div class="w-1/2 h-full p-7 sm:p-9 flex flex-col justify-between page-stack-right bg-[#fbf7ee] book-spine-shadow relative" id="pageTwoContainer">
+<!-- Encabezado de Página Derecha -->
+<div class="border-b border-[#ddccb2] pb-3 flex items-center justify-between">
+<span class="text-xs font-serif italic text-[#8c7454]">Paso 2: Validación de Seguridad</span>
+<span class="text-xs uppercase font-serif tracking-[0.18em] text-[#637286]">Folio N° 105 • Clave</span>
+</div>
+<!-- Formulario Paso 2: Contraseña -->
+<div class="my-auto px-3">
+<div class="mb-5">
+<span class="text-xs font-sans uppercase tracking-widest font-semibold text-[#0284c7] block mb-1">ACCESO ADMINISTRATIVO</span>
+<h3 class="font-sans text-xl sm:text-2xl font-bold text-[#111f33]">Contraseña Cifrada</h3>
+<p class="font-serif text-[#556980] text-sm mt-1">
+                Usuario validado: <strong class="text-[#0369a1] font-semibold underline decoration-[#38bdf8]" id="displayUsername">bibliotecario</strong>
+</p>
+</div>
+<!-- Alerta / Mensaje de Error en la contraseña -->
+<div class="hidden mb-4 p-2.5 bg-[#5a1d24]/10 border border-[#5a1d24]/30 rounded text-xs font-serif text-[#78242c] flex items-center gap-2" id="passwordError">
+<span class="material-symbols-outlined text-base shrink-0">error</span>
+<span id="passwordErrorText">La contraseña no coincide con los registros del personal HCD.</span>
+</div>
+<!-- Input de Contraseña estilizado con botón de ver ojo -->
+<div class="space-y-4">
+<div>
+<label class="block font-sans text-xs font-semibold uppercase tracking-wider text-[#334155] mb-1.5 flex justify-between items-center" for="passwordInput">
+<span>CONTRASEÑA</span>
+<span class="text-[11px] font-normal lowercase italic text-[#64748b]">clave institucional</span>
+</label>
+<div class="relative">
+<input class="w-full bg-[#f4ecd9] border-2 border-[#c5b191] focus:border-[#0284c7] focus:bg-[#fbf7ee] rounded-lg px-4 py-3 text-[#1e293b] font-sans text-base tracking-widest placeholder:text-[#94a3b8] focus:outline-none transition-all shadow-inner pr-12" id="passwordInput" placeholder="••••••••" type="password"/>
+<!-- Botón Ver Ojo (material symbol) -->
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748b] hover:text-[#0284c7] p-1 transition-colors flex items-center justify-center focus:outline-none" id="btnTogglePassword" title="Mostrar / Ocultar contraseña" type="button">
+<span class="material-symbols-outlined text-xl" id="eyeIcon">visibility</span>
+</button>
+</div>
+<div class="flex items-center justify-between mt-2 text-xs font-serif text-[#64748b]">
+<span>Demo: <em>123456</em></span>
+<a class="text-[#0284c7] hover:underline" href="#">¿Olvidó su clave?</a>
+</div>
+</div>
+<!-- Botones de Acción: Volver de Página o Entrar al Sistema -->
+<div class="pt-2 flex items-center gap-2.5">
+<button class="px-3.5 py-3 border border-[#bfa988] bg-[#ede0c8] hover:bg-[#e4d4b7] text-[#2d3748] font-sans font-medium text-xs sm:text-sm rounded-lg transition-colors flex items-center gap-1 shadow-sm" id="btnPrevPage" title="Volver al paso de usuario" type="button">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span>Atrás</span>
+</button>
+<button class="flex-1 py-3 px-5 bg-[#0284c7] hover:bg-[#0369a1] text-white font-sans text-sm tracking-wide font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 border border-sky-400/40" id="btnLoginSubmit" type="button">
+<span id="loginBtnText">Entrar al Sistema</span>
+<span class="material-symbols-outlined text-base" id="loginArrowIcon">login</span>
+<!-- Spinner para carga -->
+<svg class="hidden animate-spin w-4 h-4 text-white" fill="none" id="loginSpinner" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" fill="currentColor"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+<!-- Pie de página Derecha -->
+<div class="border-t border-[#ddccb2] pt-3 flex items-center justify-between text-xs font-serif text-[#64748b]">
+<span class="italic text-[11px]">Seguridad Criptográfica Institucional</span>
+<span class="text-[11px] italic font-serif">Folio II</span>
+</div>
+</div>
+<!-- ================= HOJA ABATIBLE 3D (FLIPPER PAGE) ================= -->
+<!-- Cara Frontal: Paso 1 (Usuario); Cara Dorsal: Resumen tras voltear -->
+<div class="flipper-page absolute top-0 right-0 w-1/2 h-full z-20 origin-left" id="flippingLeaf">
+<!-- CARA FRONTAL: PASO 1 (Usuario / Identificación) -->
+<div class="page-face absolute inset-0 w-full h-full p-7 sm:p-9 flex flex-col justify-between bg-parchment-pattern border-l border-[#decbb0] book-spine-shadow page-stack-right">
+<!-- Encabezado de Cara 1 -->
+<div class="border-b border-[#ddccb2] pb-3 flex items-center justify-between">
+<span class="text-xs uppercase font-serif tracking-[0.18em] text-[#637286]">HCD Garupá • Identificación</span>
+<span class="text-xs font-serif italic text-[#8c7454]">Tomo I • Folio 104-B</span>
+</div>
+<!-- Formulario Paso 1: Usuario -->
+<div class="my-auto px-3">
+<div class="mb-5">
+<span class="text-xs font-sans uppercase tracking-widest font-semibold text-[#0284c7] block mb-1">ACCESO ADMINISTRATIVO</span>
+<h3 class="font-sans text-xl sm:text-2xl font-bold text-[#111f33]">Personal de Biblioteca</h3>
+<p class="font-serif text-[#556980] text-sm mt-1">
+                  Ingrese su usuario registrado o legajo para continuar la autenticación.
+                </p>
+</div>
+<!-- Mensaje de Error de Usuario -->
+<div class="hidden mb-4 p-2.5 bg-[#5a1d24]/10 border border-[#5a1d24]/30 rounded text-xs font-serif text-[#78242c] flex items-center gap-2" id="usernameError">
+<span class="material-symbols-outlined text-base shrink-0">error</span>
+<span id="usernameErrorText">Por favor, ingrese su usuario o número de legajo.</span>
+</div>
+<!-- Input de Usuario -->
+<div class="space-y-4">
+<div>
+<label class="block font-sans text-xs font-semibold uppercase tracking-wider text-[#334155] mb-1.5" for="usernameInput">
+                    USUARIO
+                  </label>
+<div class="relative">
+<input autofocus="" class="w-full bg-[#f4ecd9] border-2 border-[#c5b191] focus:border-[#0284c7] focus:bg-[#fbf7ee] rounded-lg px-4 py-3 text-[#1e293b] font-sans text-base placeholder:text-[#94a3b8] focus:outline-none transition-all shadow-inner pr-10" id="usernameInput" placeholder="Ingrese su usuario" type="text" value="bibliotecario"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 text-[#0284c7] pointer-events-none">
+<span class="material-symbols-outlined text-xl">person</span>
+</div>
+</div>
+<p class="text-xs font-serif italic text-[#64748b] mt-1.5 flex items-center gap-1">
+<span>💡 Sugerencia demo: <strong>bibliotecario</strong> o su nombre de operador.</span>
+</p>
+</div>
+<!-- Botón Pasar Página -->
+<div class="pt-2">
+<button class="w-full py-3.5 px-6 bg-[#0284c7] hover:bg-[#0369a1] text-white font-sans text-sm tracking-wide font-bold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 border border-sky-400/40 group" id="btnNextPage" type="button">
+<span>Pasar Página</span>
+<span class="material-symbols-outlined text-base transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pie de página Cara 1 -->
+<div class="border-t border-[#ddccb2] pt-3 flex items-center justify-between text-xs font-serif text-[#64748b]">
+<span class="italic text-[11px]">Haga clic para voltear al campo de contraseña</span>
+<span class="text-[11px] italic font-serif">Folio I-B</span>
+</div>
+</div>
+<!-- CARA DORSAL (REVERSO DE LA PÁGINA VOLTEADA): Apunta a la izquierda cuando se da vuelta -->
+<div class="page-face page-back absolute inset-0 w-full h-full p-7 sm:p-9 flex flex-col justify-between bg-parchment-pattern border-r border-[#decbb0] book-spine-shadow-right select-none">
+<!-- Encabezado de Reverso -->
+<div class="border-b border-[#ddccb2] pb-3 flex items-center justify-between">
+<span class="text-xs uppercase font-serif tracking-[0.18em] text-[#637286]">Certificación HCD Garupá</span>
+<span class="text-xs font-serif italic text-[#8c7454]">Tomo I • Folio 104-V</span>
+</div>
+<!-- Contenido Reverso: Sello de Usuario Aceptado -->
+<div class="my-auto text-center px-3">
+<div class="w-20 h-20 mx-auto mb-3 border-2 border-[#0284c7]/40 rounded-full flex items-center justify-center bg-[#0284c7]/5 relative">
+<span class="material-symbols-outlined text-4xl text-[#0284c7]">verified_user</span>
+<div class="absolute -inset-1 border border-dashed border-[#0284c7]/30 rounded-full"></div>
+</div>
+<h4 class="font-sans text-base font-bold text-[#0c2444] uppercase tracking-wide">Usuario Registrado</h4>
+<p class="font-serif text-[#334155] text-base mt-0.5">
+                Operador: <strong class="font-semibold text-[#0284c7]" id="stampUsernameDisplay">bibliotecario</strong>
+</p>
+<div class="mt-4 p-3 bg-[#f2e7d3] border border-[#d2be9f] rounded-lg text-xs font-sans text-[#334155] text-left space-y-1">
+<div class="flex justify-between border-b border-[#decbb0] pb-1">
+<span>Organismo:</span> <span class="font-semibold text-[#0c2444]">HCD Garupá</span>
+</div>
+<div class="flex justify-between border-b border-[#decbb0] pb-1">
+<span>Unidad:</span> <span class="font-medium text-[#0284c7]">Biblioteca Hugo Lopresti</span>
+</div>
+<div class="flex justify-between">
+<span>Estado:</span> <span class="text-emerald-700 font-bold">Verificado • Aguardando clave</span>
+</div>
+</div>
+</div>
+<!-- Pie de página Reverso -->
+<div class="border-t border-[#ddccb2] pt-3 flex items-center justify-between text-xs font-serif text-[#64748b]">
+<span class="italic text-[11px]">Reverso del folio precedente</span>
+<span class="text-[11px] italic font-serif">Folio I-V</span>
+</div>
+</div>
+</div>
+</div>
+<!-- OVERLAY DE CIERRE SOLEMNE / ÉXITO AL VALIDAR -->
+<div class="absolute inset-0 z-50 bg-[#0a1426] rounded-xl flex flex-col items-center justify-center p-8 text-center opacity-0 pointer-events-none transition-opacity duration-700 shadow-2xl border-4 border-[#0284c7]/50" id="loginSuccessOverlay">
+<!-- Emblema de la Tapa del Libro Cerrado HCD Garupá -->
+<div class="w-24 h-24 rounded-2xl border-2 border-[#38bdf8] flex flex-col items-center justify-center mb-6 bg-[#071324] shadow-inner stamp-anim text-white">
+<span class="text-2xl font-black text-[#38bdf8] leading-none">HCD</span>
+<span class="text-xs text-slate-300 font-semibold tracking-wider">Garupá</span>
+<div class="w-8 h-1 bg-[#c5a059] rounded-full mt-1"></div>
+</div>
+<span class="text-xs font-sans uppercase tracking-[0.25em] text-[#38bdf8] font-semibold mb-1">
+          ACCESO CONCEDIDO • HCD GARUPÁ
+        </span>
+<h3 class="font-sans text-2xl sm:text-3xl font-extrabold text-[#f1f5f9] tracking-tight uppercase mb-2">
+          BIBLIOTECA HUGO LOPRESTI
+        </h3>
+<p class="font-serif text-[#e2e8f0] text-base italic mb-6 max-w-md">
+          «Gestionando el saber que impulsa nuestro futuro.»
+        </p>
+<!-- Barra de progreso simulando carga del panel principal -->
+<div class="w-64 bg-[#050c18] h-2 rounded-full overflow-hidden border border-[#0284c7]/40 mb-4">
+<div class="h-full bg-gradient-to-r from-[#0284c7] via-[#38bdf8] to-[#c5a059] w-0 transition-all duration-1000 ease-out" id="successProgressBar"></div>
+</div>
+<p class="text-xs font-sans text-[#94a3b8] uppercase tracking-wider">
+          Ingresando al sistema de catalogación y préstamos...
+        </p>
+</div>
+</div>
+<!-- TARJETA DE ACCIONES RÁPIDAS / CREDENCIALES DE DEMOSTRACIÓN -->
+<div class="mt-7 flex flex-wrap items-center justify-center gap-2.5 text-xs font-sans text-[#94a3b8]">
+<span class="text-[#cbd5e1] font-medium">Accesos demo:</span>
+<button class="px-3 py-1.5 bg-[#0e213b] hover:bg-[#15345d] border border-[#0284c7]/40 rounded-md text-[#38bdf8] hover:text-white transition-colors" onclick="setCredentials('bibliotecario', '123456')">
+        Acceso Válido (bibliotecario / 123456)
+      </button>
+<button class="px-3 py-1.5 bg-[#2d1b1f] hover:bg-[#3d242a] border border-[#4d2830] rounded-md text-[#f87171] transition-colors" onclick="setCredentials('operador_hcd', 'clave_invalida')">
+        Simular Clave Errónea
+      </button>
+<button class="px-3 py-1.5 bg-[#142338] hover:bg-[#1a304d] border border-[#2a456b] rounded-md text-[#cbd5e1] transition-colors" onclick="resetBook()">
+        Reiniciar Libro ↺
+      </button>
+</div>
+</main>
+<!-- MODAL / DIÁLOGO DE CATÁLOGO PÚBLICO (Para vecinos y lectores sin login) -->
+<div class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4" id="catalogModal">
+<div class="bg-[#0b1728] border border-[#0284c7]/40 rounded-2xl max-w-xl w-full p-6 text-slate-100 shadow-2xl relative">
+<button class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl p-1" onclick="closePublicCatalog()">
+        ✕
+      </button>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-lg bg-[#0284c7]/20 border border-[#0284c7] flex items-center justify-center text-[#38bdf8]">
+<span class="material-symbols-outlined">menu_book</span>
+</div>
+<div>
+<h3 class="font-sans font-bold text-lg text-white">Catálogo Público Abierto</h3>
+<p class="text-xs text-sky-400">Biblioteca Hugo Lopresti • HCD Garupá</p>
+</div>
+</div>
+<p class="text-xs text-slate-300 font-serif italic mb-4">
+        «Gestionando el saber que impulsa nuestro futuro.» Consulta libre de libros, actas legislativas y publicaciones municipales.
+      </p>
+<div class="relative mb-4">
+<input class="w-full bg-[#050c18] border border-[#1e3450] focus:border-[#0284c7] rounded-lg py-2.5 px-4 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none" placeholder="Buscar por título, autor o tema (ej: Historia de Garupá, Ordenanzas...)" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-slate-400 text-base">search</span>
+</div>
+<div class="border border-[#182a44] rounded-lg p-3 bg-[#081220] max-h-48 overflow-y-auto space-y-2 text-xs">
+<div class="p-2 rounded bg-[#0e213b] flex items-center justify-between border-l-2 border-[#38bdf8]">
+<div>
+<div class="font-semibold text-white">Anales y Compendio Legislativo de Garupá</div>
+<div class="text-[11px] text-slate-400">Honorable Concejo Deliberante • Sala Histórica</div>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700/50">Disponible</span>
+</div>
+<div class="p-2 rounded bg-[#0e213b] flex items-center justify-between border-l-2 border-[#c5a059]">
+<div>
+<div class="font-semibold text-white">Colección Hugo Lopresti: Crónicas y Letras</div>
+<div class="text-[11px] text-slate-400">Fondo Especial • Sección Literatura Regional</div>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700/50">Disponible</span>
+</div>
+<div class="p-2 rounded bg-[#0e213b] flex items-center justify-between border-l-2 border-[#38bdf8]">
+<div>
+<div class="font-semibold text-white">Guía de Recursos Educativos Comunitarios</div>
+<div class="text-[11px] text-slate-400">Secretaría HCD • Área Biblioteca</div>
+</div>
+<span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-700/50">En Sala</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-[#182a44] flex items-center justify-between text-xs text-slate-400">
+<span>No se requiere inicio de sesión para lectura en sala.</span>
+<button class="px-4 py-2 bg-[#0284c7] hover:bg-[#0369a1] text-white rounded font-medium transition-colors" onclick="closePublicCatalog()">
+          Cerrar Consulta
+        </button>
+</div>
+</div>
+</div>
+<!-- Footer Inferior -->
+<footer class="relative z-10 w-full max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between text-xs text-[#64748b] border-t border-[#12233b]">
+<div class="flex items-center gap-2">
+<span class="font-sans text-slate-400 font-semibold">Biblioteca Hugo Lopresti</span>
+<span>•</span>
+<span>Honorable Concejo Deliberante de Garupá (Misiones)</span>
+</div>
+<div class="flex items-center gap-4 mt-2 sm:mt-0 font-serif text-[#94a3b8]">
+<span class="italic text-[11px]">«Gestionando el saber que impulsa nuestro futuro.»</span>
+<span>•</span>
+<a class="text-[#38bdf8] hover:underline font-sans text-xs" href="#catalogo-publico" onclick="openPublicCatalog(event)">Catálogo Público</a>
+</div>
+</footer>
+<!-- SCRIPT CON LA LÓGICA DE INTERACCIÓN, VOLTEO 3D Y CIERRE -->
+<script>
+    // Referencias al DOM
+    const flippingLeaf = document.getElementById('flippingLeaf');
+    const bookContainer = document.getElementById('bookContainer');
+    const usernameInput = document.getElementById('usernameInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const btnNextPage = document.getElementById('btnNextPage');
+    const btnPrevPage = document.getElementById('btnPrevPage');
+    const btnLoginSubmit = document.getElementById('btnLoginSubmit');
+    const usernameError = document.getElementById('usernameError');
+    const usernameErrorText = document.getElementById('usernameErrorText');
+    const passwordError = document.getElementById('passwordError');
+    const passwordErrorText = document.getElementById('passwordErrorText');
+    const displayUsername = document.getElementById('displayUsername');
+    const stampUsernameDisplay = document.getElementById('stampUsernameDisplay');
+    const leftPageStampArea = document.getElementById('leftPageStampArea');
+    const btnTogglePassword = document.getElementById('btnTogglePassword');
+    const eyeIcon = document.getElementById('eyeIcon');
+    const loginBtnText = document.getElementById('loginBtnText');
+    const loginArrowIcon = document.getElementById('loginArrowIcon');
+    const loginSpinner = document.getElementById('loginSpinner');
+    const loginSuccessOverlay = document.getElementById('loginSuccessOverlay');
+    const successProgressBar = document.getElementById('successProgressBar');
+    const catalogModal = document.getElementById('catalogModal');
+
+    // Partículas ambientales de polvo de biblioteca azuladas/claras
+    const particlesContainer = document.getElementById('particles-container');
+    for (let i = 0; i < 24; i++) {
+      const p = document.createElement('div');
+      p.className = 'dust-particle';
+      const size = Math.random() * 3 + 1.5;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.left = `${Math.random() * 100}vw`;
+      p.style.animationDelay = `${Math.random() * 8}s`;
+      p.style.animationDuration = `${8 + Math.random() * 12}s`;
+      particlesContainer.appendChild(p);
+    }
+
+    // Estado del libro
+    let isFlipped = false;
+
+    // Función: Pasar página hacia adelante (Paso 1 -> Paso 2)
+    function flipToPasswordPage() {
+      const username = usernameInput.value.trim();
+      
+      // Validación del usuario
+      if (!username) {
+        usernameError.classList.remove('hidden');
+        usernameErrorText.textContent = "Por favor, ingrese su usuario o legajo HCD.";
+        usernameInput.focus();
+        return;
+      }
+
+      if (username.length < 3) {
+        usernameError.classList.remove('hidden');
+        usernameErrorText.textContent = "El usuario institucional debe poseer al menos 3 caracteres.";
+        usernameInput.focus();
+        return;
+      }
+
+      // Si es válido, ocultamos errores
+      usernameError.classList.add('hidden');
+      
+      // Actualizamos los textos de la página de contraseña y del reverso
+      displayUsername.textContent = username;
+      stampUsernameDisplay.textContent = username;
+
+      // Colocar sello de tinta dinámico institucional en la página izquierda
+      leftPageStampArea.innerHTML = `
+        <div class="stamp-anim border border-[#0284c7] bg-[#0284c7]/10 rounded-md p-2 text-center text-[#0c2444]">
+          <div class="text-[10px] font-sans uppercase tracking-wider font-bold text-[#0284c7]">HCD GARUPÁ • REGISTRO CONSIGNADO</div>
+          <div class="text-xs font-serif italic font-semibold text-[#111f33]">«${username}»</div>
+          <div class="text-[9px] font-sans text-[#64748b] mt-0.5">${new Date().toLocaleTimeString()} • Pase Autorizado a Clave</div>
+        </div>
+      `;
+
+      // Efecto 3D: Dar vuelta a la hoja
+      flippingLeaf.classList.add('flipped');
+      isFlipped = true;
+
+      // Enfocar el input de contraseña tras completarse el volteo
+      setTimeout(() => {
+        passwordInput.focus();
+      }, 700);
+    }
+
+    // Función: Volver a la página anterior (Paso 2 -> Paso 1)
+    function flipBackToUserPage() {
+      flippingLeaf.classList.remove('flipped');
+      isFlipped = false;
+      passwordError.classList.add('hidden');
+      setTimeout(() => {
+        usernameInput.focus();
+      }, 700);
+    }
+
+    // Función: Validar contraseña e iniciar sesión (Animación de Cierre del Libro)
+    function handleLogin() {
+      const password = passwordInput.value;
+      
+      // Limpiar errores
+      passwordError.classList.add('hidden');
+
+      if (!password) {
+        passwordError.classList.remove('hidden');
+        passwordErrorText.textContent = "Por favor, ingrese su contraseña de personal.";
+        passwordInput.focus();
+        return;
+      }
+
+      // Simular estado de carga
+      loginBtnText.textContent = "Validando en servidor HCD...";
+      loginArrowIcon.classList.add('hidden');
+      loginSpinner.classList.remove('hidden');
+      btnLoginSubmit.disabled = true;
+
+      setTimeout(() => {
+        // En esta demo: si la clave es 'clave_invalida', se rechaza
+        if (password === 'clave_invalida') {
+          // ERROR DE LOGIN
+          loginBtnText.textContent = "Entrar al Sistema";
+          loginArrowIcon.classList.remove('hidden');
+          loginSpinner.classList.add('hidden');
+          btnLoginSubmit.disabled = false;
+
+          passwordError.classList.remove('hidden');
+          passwordErrorText.textContent = "Error: Contraseña incorrecta para el personal HCD Garupá.";
+          
+          // Sacudida visual del libro por rechazo
+          bookContainer.classList.add('translate-x-1');
+          setTimeout(() => bookContainer.classList.remove('translate-x-1'), 100);
+          setTimeout(() => bookContainer.classList.add('-translate-x-1'), 200);
+          setTimeout(() => bookContainer.classList.remove('-translate-x-1'), 300);
+          passwordInput.select();
+        } else {
+          // LOGIN EXITOSO: ANIMACIÓN DE CIERRE DEL LIBRO
+          loginBtnText.textContent = "¡Acceso Aprobado!";
+          
+          // 1. Añadimos la clase de cierre 3D al libro
+          bookContainer.classList.add('book-closed');
+
+          // 2. Desplegamos el overlay de tapa cerrada y éxito con escudo HCD
+          setTimeout(() => {
+            loginSuccessOverlay.classList.remove('pointer-events-none');
+            loginSuccessOverlay.classList.remove('opacity-0');
+            loginSuccessOverlay.classList.add('opacity-100');
+            successProgressBar.style.width = '100%';
+          }, 400);
+
+          // 3. Simulación de confirmación final
+          setTimeout(() => {
+            const userName = usernameInput.value.trim();
+            alert(`✨ ¡Acceso concedido exitosamente!\n\nBienvenido a la Biblioteca Hugo Lopresti del Honorable Concejo Deliberante de Garupá.\nUsuario: "${userName}".\nEl libro institucional se ha cerrado de manera segura para iniciar el sistema.`);
+          }, 1800);
+        }
+      }, 850);
+    }
+
+    // Toggle para ver contraseña con icono interactivo
+    btnTogglePassword.addEventListener('click', () => {
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.textContent = 'visibility_off';
+      } else {
+        passwordInput.type = 'password';
+        eyeIcon.textContent = 'visibility';
+      }
+    });
+
+    // Control del modal de Catálogo Público
+    window.openPublicCatalog = function(e) {
+      if (e) e.preventDefault();
+      catalogModal.classList.remove('hidden');
+      catalogModal.classList.add('flex');
+    };
+
+    window.closePublicCatalog = function() {
+      catalogModal.classList.add('hidden');
+      catalogModal.classList.remove('flex');
+    };
+
+    // Asignación de Event Listeners
+    btnNextPage.addEventListener('click', flipToPasswordPage);
+    btnPrevPage.addEventListener('click', flipBackToUserPage);
+    btnLoginSubmit.addEventListener('click', handleLogin);
+
+    // Tecla Enter para experiencia fluida
+    usernameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        flipToPasswordPage();
+      }
+    });
+
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleLogin();
+      }
+    });
+
+    // Helpers para la barra de prueba rápida
+    window.setCredentials = function(user, pass) {
+      usernameInput.value = user;
+      passwordInput.value = pass;
+      if (isFlipped) {
+        flipBackToUserPage();
+      }
+    };
+
+    window.resetBook = function() {
+      usernameInput.value = 'bibliotecario';
+      passwordInput.value = '123456';
+      usernameError.classList.add('hidden');
+      passwordError.classList.add('hidden');
+      loginSuccessOverlay.classList.add('opacity-0');
+      loginSuccessOverlay.classList.add('pointer-events-none');
+      bookContainer.classList.remove('book-closed');
+      successProgressBar.style.width = '0%';
+      loginBtnText.textContent = "Entrar al Sistema";
+      loginArrowIcon.classList.remove('hidden');
+      loginSpinner.classList.add('hidden');
+      btnLoginSubmit.disabled = false;
+      flipBackToUserPage();
+    };
+  </script>
+</body></html>
