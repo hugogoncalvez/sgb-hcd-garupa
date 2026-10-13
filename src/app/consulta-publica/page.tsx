@@ -315,6 +315,15 @@ export default function ConsultaPublica() {
           <a href="/login" className="inline-block mt-2 text-xs font-bold text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
             Acceso administrativo
           </a>
+          <p className="mt-4 text-slate-400 dark:text-slate-500 text-xs font-black italic tracking-widest uppercase">
+            SGB v1.0 • 2026
+          </p>
+          <p className="text-xs font-bold text-slate-300 dark:text-slate-600 relative group cursor-default inline-block">
+            <span>by Hugo G. Goncalvez</span>
+            <span className="absolute -top-12 left-1/2 -translate-x-1/2 bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 text-xs font-bold px-4 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap shadow-lg">
+              ✉ hugogoncalvez@gmail.com &nbsp;·&nbsp; 📱 376-4941490
+            </span>
+          </p>
         </div>
       </footer>
     </div>
