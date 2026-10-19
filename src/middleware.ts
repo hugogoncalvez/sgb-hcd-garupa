@@ -1,10 +1,22 @@
 import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export default withAuth({
-  pages: {
-    signIn: "/login",
+export default withAuth(
+  function middleware(req) {
+    const token = req.nextauth.token as { debeCambiarPassword?: boolean } | null;
+
+    if (token?.debeCambiarPassword && req.nextUrl.pathname !== "/cambiar-password") {
+      return NextResponse.redirect(new URL("/cambiar-password", req.url));
+    }
+
+    return NextResponse.next();
   },
-});
+  {
+    pages: {
+      signIn: "/login",
+    },
+  }
+);
 
 export const config = {
   matcher: [

@@ -53,6 +53,7 @@ export const authOptions: NextAuthOptions = {
             username: user.username,
             role: user.rol,
             nombreCompleto: user.nombreCompleto,
+            debeCambiarPassword: user.debeCambiarPassword,
           };
         } catch (error) {
           console.error('[AUTH] Error in authorize:', error);
@@ -62,11 +63,21 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
         token.nombreCompleto = (user as any).nombreCompleto;
+        token.debeCambiarPassword = (user as any).debeCambiarPassword;
+      }
+      if (trigger === 'update' && token.id) {
+        const dbUser = await prisma.usuario.findUnique({
+          where: { id: token.id as string },
+          select: { debeCambiarPassword: true },
+        });
+        if (dbUser) {
+          token.debeCambiarPassword = dbUser.debeCambiarPassword;
+        }
       }
       return token;
     },
@@ -75,6 +86,7 @@ export const authOptions: NextAuthOptions = {
         (session.user as any).id = token.id;
         (session.user as any).role = token.role;
         (session.user as any).nombreCompleto = token.nombreCompleto;
+        (session.user as any).debeCambiarPassword = token.debeCambiarPassword;
       }
       return session;
     },

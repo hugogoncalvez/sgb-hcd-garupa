@@ -24,7 +24,7 @@ export const usuariosRouter = router({
       const hash = await bcrypt.hash(input.newPassword, 10);
       await ctx.prisma.usuario.update({
         where: { id: input.userId },
-        data: { password: hash },
+        data: { password: hash, debeCambiarPassword: false },
       });
       return true;
     }),
