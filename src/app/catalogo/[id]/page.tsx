@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { trpc } from '@/utils/trpc';
+import { validarISBN } from '@/lib/isbn';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import {
@@ -63,6 +64,10 @@ export default function LibroDetail() {
     volumen: '',
     portadaUrl: '',
   });
+
+  const isbnResult = validarISBN(form.isbn);
+  const isbnInvalido = isbnResult.estado === 'invalido';
+  const isbnSugerencia13 = isbnResult.estado === 'valido' && isbnResult.tipo === 'isbn10' ? isbnResult.isbn13 : null;
 
   const updateLibro = trpc.libros.update.useMutation({
     onSuccess: () => {
@@ -161,6 +166,10 @@ export default function LibroDetail() {
   });
 
   const handleSave = () => {
+    if (isbnResult.estado === 'invalido') {
+      toast.error(isbnResult.motivo, { duration: 4000 });
+      return;
+    }
     updateLibro.mutate({ id, ...form });
   };
 
@@ -249,7 +258,7 @@ export default function LibroDetail() {
               </button>
               <button
                 onClick={handleSave}
-                disabled={updateLibro.isPending}
+                disabled={updateLibro.isPending || isbnInvalido}
                 className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 transition-all shadow-md shadow-emerald-200 dark:shadow-emerald-900/30 disabled:opacity-50"
               >
                 <Save size={16} />
@@ -285,7 +294,29 @@ export default function LibroDetail() {
                 </h3>
                 {isEditing ? (
                   <>
-                    <EditField icon={<Barcode size={18} />} label="ISBN" value={form.isbn} onChange={(v) => setForm(f => ({ ...f, isbn: v }))} />
+                    <EditField
+                      icon={<Barcode size={18} />}
+                      label="ISBN"
+                      value={form.isbn}
+                      onChange={(v) => setForm(f => ({ ...f, isbn: v }))}
+                      error={isbnResult.estado === 'invalido' ? isbnResult.motivo : undefined}
+                      helper={
+                        isbnSugerencia13 ? (
+                          <span>
+                            ISBN-10 válido · ISBN-13 equivalente: {isbnSugerencia13}{' '}
+                            <button
+                              type="button"
+                              onClick={() => setForm(f => ({ ...f, isbn: isbnSugerencia13 }))}
+                              className="underline hover:text-emerald-700"
+                            >
+                              usar
+                            </button>
+                          </span>
+                        ) : isbnResult.estado === 'valido' ? (
+                          <span>ISBN-13 válido</span>
+                        ) : undefined
+                      }
+                    />
                     <div className="flex items-start gap-3">
                       <div className="w-16 h-24 rounded-lg bg-slate-100 dark:bg-slate-700 overflow-hidden flex-shrink-0 flex items-center justify-center">
                         {form.portadaUrl ? (
@@ -620,7 +651,7 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode, label: string,
   );
 }
 
-function EditField({ icon, label, value, onChange }: { icon: React.ReactNode, label: string, value: string, onChange: (v: string) => void }) {
+function EditField({ icon, label, value, onChange, error, helper }: { icon: React.ReactNode, label: string, value: string, onChange: (v: string) => void, error?: string, helper?: React.ReactNode }) {
   return (
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 flex items-center justify-center flex-shrink-0">
@@ -632,8 +663,14 @@ function EditField({ icon, label, value, onChange }: { icon: React.ReactNode, la
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          style={error ? { borderColor: '#f87171' } : undefined}
           className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-bold text-sm text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-100"
         />
+        {error ? (
+          <p className="mt-1 text-[11px] font-bold text-red-500">{error}</p>
+        ) : helper ? (
+          <div className="mt-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400">{helper}</div>
+        ) : null}
       </div>
     </div>
   );

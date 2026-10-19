@@ -1,5 +1,7 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { router, publicProcedure } from '../trpc';
+import { limpiarISBN, validarISBN } from '@/lib/isbn';
 
 const subjectTranslations: Record<string, string> = {
   'fiction': 'Ficción',
@@ -145,7 +147,16 @@ const ejemplarSchema = z.object({
 });
 
 const libroFieldsSchema = z.object({
-  isbn: z.string().optional(),                  // MARC 020
+  isbn: z
+    .string()
+    .optional()
+    .transform(v => limpiarISBN(v ?? ''))       // guarda solo dígitos (sin guiones ni espacios)
+    .superRefine((v, ctx) => {
+      const resultado = validarISBN(v);
+      if (resultado.estado === 'invalido') {
+        ctx.addIssue({ code: 'custom', message: resultado.motivo });
+      }
+    }),                                         // MARC 020
   idioma: z.string().optional(),                // MARC 041
   clasificacion: z.string().optional(),         // MARC 080 - CDU
   autor: z.string().optional(),                 // MARC 100
@@ -255,6 +266,18 @@ export const librosRouter = router({
         }
       }
       data.cantidadEjemplares = ejemplares?.length || 1;
+      if (data.isbn) {
+        const duplicado = await ctx.prisma.libro.findFirst({
+          where: { isbn: data.isbn },
+          select: { id: true, titulo: true },
+        });
+        if (duplicado) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: `Ya existe un libro con el ISBN ${data.isbn}: "${duplicado.titulo || 'Sin título'}"`,
+          });
+        }
+      }
       if (ejemplares && ejemplares.length > 0) {
         data.ejemplares = {
           createMany: { data: ejemplares.map(e => ({ codigoInterno: e.codigoInterno, tipoMaterial: e.tipoMaterial || null, ubicacion: e.ubicacion || null, codigoEstante: e.codigoEstante || null })) },
@@ -267,6 +290,18 @@ export const librosRouter = router({
     .input(libroFieldsSchema.extend({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const { id, ejemplares, ...data } = input;
+      if (data.isbn) {
+        const duplicado = await ctx.prisma.libro.findFirst({
+          where: { isbn: data.isbn, id: { not: id } },
+          select: { id: true, titulo: true },
+        });
+        if (duplicado) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: `Ya existe otro libro con el ISBN ${data.isbn}: "${duplicado.titulo || 'Sin título'}"`,
+          });
+        }
+      }
       return await ctx.prisma.libro.update({
         where: { id },
         data,

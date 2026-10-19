@@ -29,9 +29,11 @@ import {
   Package,
   Layers,
   LocateFixed,
-  X
+  X,
+  AlertCircle
 } from 'lucide-react';
 import { trpc } from '@/utils/trpc';
+import { validarISBN } from '@/lib/isbn';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
@@ -126,6 +128,9 @@ export default function NuevoLibro() {
   const [hoverCover, setHoverCover] = useState(false);
   const [coverRect, setCoverRect] = useState({ left: 0, top: 0, right: 0 });
   const coverRef = useRef<HTMLDivElement>(null);
+
+  const isbnResult = validarISBN(formData.isbn);
+  const isbnInvalido = isbnResult.estado === 'invalido';
 
   useEffect(() => {
     const nombreCompleto = (session?.user as any)?.nombreCompleto;
@@ -257,6 +262,10 @@ export default function NuevoLibro() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isbnResult.estado === 'invalido') {
+      toast.error(isbnResult.motivo, { duration: 4000 });
+      return;
+    }
     createLibro.mutate({ ...formData, ejemplares });
   };
 
@@ -337,8 +346,14 @@ export default function NuevoLibro() {
                             name="isbn"
                             value={formData.isbn}
                             onChange={handleChange}
+                            onBlur={() => {
+                              if (isbnResult.estado !== 'vacio') {
+                                setFormData(prev => ({ ...prev, isbn: isbnResult.normalizado }));
+                              }
+                            }}
+                            style={isbnInvalido ? { borderColor: '#f87171' } : undefined}
                             className={searchInputClasses + " text-sm"}
-                            placeholder="ISBN"
+                            placeholder="ISBN (opcional)"
                             type="text"
                             onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleSearch(); } }}
                           />
@@ -348,6 +363,31 @@ export default function NuevoLibro() {
                             </button>
                           )}
                         </div>
+                        {isbnInvalido && (
+                          <p className="flex items-center gap-1.5 px-1 text-xs font-bold text-red-500">
+                            <AlertCircle size={13} className="flex-shrink-0" />
+                            {isbnResult.motivo}
+                          </p>
+                        )}
+                        {isbnResult.estado === 'valido' && isbnResult.tipo === 'isbn10' && (
+                          <p className="flex items-center gap-1.5 px-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                            <BadgeCheck size={13} className="flex-shrink-0" />
+                            ISBN-10 válido · ISBN-13 equivalente: {isbnResult.isbn13}
+                            <button
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, isbn: isbnResult.isbn13 }))}
+                              className="underline hover:text-emerald-700"
+                            >
+                              usar
+                            </button>
+                          </p>
+                        )}
+                        {isbnResult.estado === 'valido' && isbnResult.tipo === 'isbn13' && (
+                          <p className="flex items-center gap-1.5 px-1 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                            <BadgeCheck size={13} className="flex-shrink-0" />
+                            ISBN-13 válido
+                          </p>
+                        )}
                         <div className="relative">
                           <Type className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" size={18} />
                           <input
@@ -727,7 +767,7 @@ export default function NuevoLibro() {
                     </button>
                     <button 
                       type="submit" 
-                      disabled={createLibro.isPending}
+                      disabled={createLibro.isPending || isbnInvalido}
                       className="px-10 py-3.5 bg-indigo-600 text-white font-black rounded-2xl shadow-lg shadow-indigo-100 dark:shadow-indigo-900/30 hover:shadow-xl hover:bg-indigo-700 transition-all active:scale-95 flex items-center gap-3 disabled:opacity-50"
                     >
                       <Save size={20} />
