@@ -667,7 +667,6 @@ export default function NuevoLibro() {
                           <option value="En estante">En estante</option>
                           <option value="Depósito">Depósito</option>
                           <option value="En reparación">En reparación</option>
-                          <option value="En préstamo">En préstamo</option>
                         </select>
                       </FormField>
 
