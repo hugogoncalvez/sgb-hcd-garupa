@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, KeyRound, LogOut } from 'lucide-react';
+import { Eye, EyeOff, KeyRound } from 'lucide-react';
 import { toast } from 'sonner';
 import { signOut } from 'next-auth/react';
 import { trpc } from '@/utils/trpc';
 
 export default function CambiarPasswordPage() {
-  const { data: session, status, update } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [currentPass, setCurrentPass] = useState('');
   const [newPass, setNewPass] = useState('');
@@ -19,10 +19,7 @@ export default function CambiarPasswordPage() {
 
   const updatePassword = trpc.usuarios.updatePassword.useMutation({
     onSuccess: async () => {
-      await update({});
-      toast.success('Contraseña actualizada');
-      router.replace('/');
-      router.refresh();
+      await signOut({ callbackUrl: '/login' });
     },
     onError: (error) => {
       submittingRef.current = false;
@@ -120,16 +117,9 @@ export default function CambiarPasswordPage() {
             disabled={updatePassword.isPending}
             className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm hover:bg-indigo-700 transition-all active:scale-95 disabled:opacity-50 mt-2"
           >
-            {updatePassword.isPending ? 'Guardando...' : 'Guardar y continuar'}
+            {updatePassword.isPending ? 'Guardando...' : 'Guardar'}
           </button>
         </form>
-
-        <button
-          onClick={() => signOut({ callbackUrl: '/login' })}
-          className="w-full flex items-center justify-center gap-2 mt-6 text-sm font-bold text-slate-400 hover:text-rose-500 transition-colors"
-        >
-          <LogOut size={16} /> Cerrar sesión
-        </button>
       </div>
     </div>
   );
