@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
+import { TRPCError } from '@trpc/server';
 import { router, publicProcedure } from '../trpc';
 
 export const usuariosRouter = router({
@@ -13,13 +14,17 @@ export const usuariosRouter = router({
       const user = await ctx.prisma.usuario.findUnique({
         where: { id: input.userId },
       });
-      if (!user) throw new Error('Usuario no encontrado');
+      if (!user) throw new TRPCError({ code: 'NOT_FOUND', message: 'Usuario no encontrado' });
 
       const valid = await bcrypt.compare(input.currentPassword, user.password);
-      if (!valid) throw new Error('La contraseña actual es incorrecta');
+      if (!valid) {
+        const alreadyApplied = await bcrypt.compare(input.newPassword, user.password);
+        if (alreadyApplied) return true;
+        throw new TRPCError({ code: 'UNAUTHORIZED', message: 'La contraseña actual es incorrecta' });
+      }
 
       const same = await bcrypt.compare(input.newPassword, user.password);
-      if (same) throw new Error('La nueva contraseña debe ser distinta a la actual');
+      if (same) throw new TRPCError({ code: 'BAD_REQUEST', message: 'La nueva contraseña debe ser distinta a la actual' });
 
       const hash = await bcrypt.hash(input.newPassword, 10);
       await ctx.prisma.usuario.update({

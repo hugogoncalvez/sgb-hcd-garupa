@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, KeyRound, LogOut } from 'lucide-react';
@@ -15,6 +15,7 @@ export default function CambiarPasswordPage() {
   const [newPass, setNewPass] = useState('');
   const [repeatPass, setRepeatPass] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const submittingRef = useRef(false);
 
   const updatePassword = trpc.usuarios.updatePassword.useMutation({
     onSuccess: async () => {
@@ -24,6 +25,7 @@ export default function CambiarPasswordPage() {
       router.refresh();
     },
     onError: (error) => {
+      submittingRef.current = false;
       toast.error(error.message, { duration: 4000 });
     },
   });
@@ -63,6 +65,9 @@ export default function CambiarPasswordPage() {
       toast.error('Sesión inválida, ingresá de nuevo');
       return;
     }
+
+    if (submittingRef.current) return;
+    submittingRef.current = true;
 
     updatePassword.mutate({ userId, currentPassword: currentPass, newPassword: newPass });
   };
